@@ -10,7 +10,7 @@ export const PageLoader = memo(() => (
   >
     <svg
       aria-hidden="true"
-      className="size-12 animate-spin text-gray-200 fill-sky-500"
+      className="size-12 animate-spin text-gray-200 fill-emerald-800"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

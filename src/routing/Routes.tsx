@@ -1,7 +1,7 @@
 import { type JSX, lazy, Suspense } from 'react';
 import { Outlet, Route, Routes } from 'react-router';
 
-import { PageLoader } from 'src/ui/PageLoader/PageLoader';
+import { PageLoader } from 'src/ui/atoms/PageLoader/PageLoader';
 
 import { routesConfig } from './routesConfig';
 

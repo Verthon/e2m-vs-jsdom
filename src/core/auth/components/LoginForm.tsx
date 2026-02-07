@@ -103,7 +103,7 @@ export const LoginForm = () => {
       <div className="text-center">
         <button
           type="button"
-          className="text-sm text-blue-600 hover:text-blue-700 focus:outline-none focus:underline"
+          className="text-sm text-emerald-800 hover:text-emerald-900 focus:outline-none focus:underline"
           disabled={isPending}
         >
           {t("core.auth.login.forgotPassword")}

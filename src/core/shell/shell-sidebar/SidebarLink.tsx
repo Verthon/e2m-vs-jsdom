@@ -14,15 +14,15 @@ type SidebarLinkProps = {
 
 const variantStyles: Record<Variant, { base: string; active: string }> = {
   default: {
-    base: "px-3 py-2 rounded hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 text-gray-800",
-    active: "font-bold text-blue-600",
+    base: "px-3 py-2 rounded hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 text-gray-800",
+    active: "font-bold text-emerald-800",
   },
   primary: {
-    base: "px-4 py-2 rounded bg-blue-600 text-white font-semibold text-center hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
+    base: "px-4 py-2 rounded bg-emerald-800 text-white font-semibold text-center hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800",
     active: "",
   },
   outline: {
-    base: "px-4 py-2 rounded border border-gray-300 text-gray-800 font-semibold text-center hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
+    base: "px-4 py-2 rounded border border-gray-300 text-gray-800 font-semibold text-center hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800",
     active: "",
   },
 };

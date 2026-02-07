@@ -16,8 +16,8 @@ export const MobileNav = () => {
         end
         aria-label="Home"
         className={({ isActive }) =>
-          `flex flex-col items-center justify-center gap-1 text-xs font-medium w-full h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
-            isActive ? 'text-blue-600' : 'text-gray-800'
+          `flex flex-col items-center justify-center gap-1 text-xs font-medium w-full h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 ${
+            isActive ? 'text-emerald-800' : 'text-gray-800'
           }`
         }
       >
