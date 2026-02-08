@@ -1,10 +1,10 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline';
 import { FloatingButton } from '../../../ui/floatingButton/FloatingButton';
 import { useScrollVisibility } from '../hooks/useScrollVisibility';
-import { useTranslation } from 'src/i18n/useTranslation';
+import { useCoreTranslation } from 'src/core/i18n/useCoreTranslation';
 
 export const ScrollToTopButton = () => {
-  const { t } = useTranslation();
+  const { t } = useCoreTranslation();
   const isVisible = useScrollVisibility(300);
 
   const handleScrollToTop = () => {

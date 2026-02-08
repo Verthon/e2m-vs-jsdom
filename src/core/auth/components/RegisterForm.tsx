@@ -3,12 +3,12 @@ import { useNavigate } from "react-router";
 import * as z from "zod/mini";
 import { Form } from "@base-ui/react/form";
 
-import { useTranslation } from "src/i18n/useTranslation";
-import { Button } from "src/ui/Button/Button";
-import { Field } from "src/ui/field/Field";
+import { useCoreTranslation } from "src/core/i18n/useCoreTranslation";
 import { useRegister } from "../hooks/useRegister";
+import { Field } from "src/ui/organisms/Field/Field";
+import { Button } from "src/ui/atoms/Button/Button";
 
-const createSchema = (t: ReturnType<typeof useTranslation>["t"]) =>
+const createSchema = (t: ReturnType<typeof useCoreTranslation>["t"]) =>
   z
     .object({
       username: z.string().check(
@@ -44,7 +44,7 @@ const createSchema = (t: ReturnType<typeof useTranslation>["t"]) =>
     );
 
 export const RegisterForm = () => {
-  const { t } = useTranslation();
+  const { t } = useCoreTranslation();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const { register, isPending } = useRegister();
@@ -129,14 +129,13 @@ export const RegisterForm = () => {
         <span className="text-sm text-gray-600">
           {t("core.auth.register.haveAccount")}{" "}
         </span>
-        <button
+        <Button
           type="button"
-          className="text-sm text-emerald-800 hover:text-emerald-900 focus:outline-none focus:underline"
           onClick={handleSignInClick}
-          disabled={isPending}
+          isDisabled={isPending}
         >
           {t("core.auth.register.signIn")}
-        </button>
+        </Button>
       </div>
     </Form>
   );

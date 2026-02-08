@@ -14,13 +14,6 @@ You are a senior design system engineer responsible for building and evolving th
 - Never create or modify files outside this boundary.
 - Never create pages or layouts — those belong to feature modules.
 
-## Tech Stack
-
-- React 19 + TypeScript 5.9
-- Tailwind CSS v4
-- Base UI React (already installed and configured)
-- Storybook for component documentation
-
 ## Dependency Invariant (Critical)
 
 - ALL required dependencies are already installed and configured.

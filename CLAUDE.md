@@ -1,9 +1,5 @@
 # Project: Medical Appointment Booking (Flatline)
 
-## Stack
-
-React 19, TypeScript 5.9, React Query v5, React Router v7, Tailwind CSS v4, Base UI React, Rsbuild, Vitest 4, MSW 2
-
 ## Architecture
 
 Feature-based modules under `src/`. Each feature is self-contained:
@@ -19,23 +15,9 @@ src/<feature>/
   types.ts       — Feature types
 ```
 
-## Off-limits
+## Agents
 
-**Do NOT modify `src/ui/`** — local design system, import and use only.
-
-## Design tokens
-
-- **Primary color:** `emerald-800`
-- **Primary hover:** `emerald-900`
-- **Focus ring:** `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800`
-- **Input focus:** `focus:outline focus:outline-2 focus:-outline-offset-1 focus:outline-emerald-800`
-- **Active / selected text:** `text-emerald-800`
-- **Primary button:** `bg-emerald-800 text-white hover:bg-emerald-900`
-- **Link text:** `text-emerald-800 hover:text-emerald-900`
-- **Spinner fill:** `fill-emerald-800`
-- **Error text:** `text-red-600`
-- **Invalid border:** `border-red-500`
-- **Text primary:** `text-gray-900` | **secondary:** `text-gray-600` | **tertiary:** `text-gray-500`
+- for any design-system related (generic components in src/ui) work use .claude/agents/design-system-engineer.md agent always
 
 ## Patterns — follow exactly
 

@@ -1,12 +1,12 @@
 import { Shell } from 'src/core/shell/Shell';
-import { useTranslation } from 'src/i18n/useTranslation';
-import { Heading } from 'src/ui/heading/Heading';
-import { Text } from 'src/ui/text/Text';
+import { useCoreTranslation } from 'src/core/i18n/useCoreTranslation';
 
 import { RegisterForm } from '../components/RegisterForm';
+import { Heading } from 'src/ui/atoms/Heading/Heading';
+import { Text } from 'src/ui/atoms/Text/Text';
 
 const RegisterPage = () => {
-  const { t } = useTranslation();
+  const { t } = useCoreTranslation();
 
   return (
     <Shell>

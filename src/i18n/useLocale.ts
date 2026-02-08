@@ -1,22 +1,18 @@
 import { useIntl } from 'react-intl';
-import type enCore from '../core/i18n/en.json';
 import { useLocaleContext } from './LocaleProvider';
 
-export type CoreMessageKey = keyof typeof enCore;
-
-export type MessageKey =
-  | CoreMessageKey
-
-type TranslateFn = <Key extends MessageKey>(
+type TranslateFn<TMessages extends Record<string, string>> = <
+  Key extends keyof TMessages & string,
+>(
   key: Key,
   values?: Record<string, string>,
 ) => string;
 
-export const useLocale = () => {
+export const useLocale = <TMessages extends Record<string, string>>() => {
   const { locale, setLocale } = useLocaleContext();
   const intl = useIntl();
 
-  const t: TranslateFn = (key, values) =>
+  const t: TranslateFn<TMessages> = (key, values) =>
     intl.formatMessage({ id: key }, values);
 
   return { locale, setLocale, t };

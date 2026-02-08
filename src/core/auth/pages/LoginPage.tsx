@@ -1,12 +1,12 @@
 import { Shell } from 'src/core/shell/Shell';
-import { useTranslation } from 'src/i18n/useTranslation';
+import { useCoreTranslation } from 'src/core/i18n/useCoreTranslation';
 import { Heading } from 'src/ui/heading/Heading';
 import { Text } from 'src/ui/text/Text';
 
 import { LoginForm } from '../components/LoginForm';
 
 const LoginPage = () => {
-  const { t } = useTranslation();
+  const { t } = useCoreTranslation();
 
   return (
     <Shell>

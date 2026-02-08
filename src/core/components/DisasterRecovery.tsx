@@ -1,10 +1,10 @@
-import { useTranslation } from 'src/i18n/useTranslation';
-import { Heading } from 'src/ui/heading/Heading';
-import { Text } from 'src/ui/text/Text';
-import { Button } from 'src/ui/Button/Button';
+import { useCoreTranslation } from 'src/core/i18n/useCoreTranslation';
+import { Button } from 'src/ui/atoms/Button/Button';
+import { Heading } from 'src/ui/atoms/Heading/Heading';
+import { Text } from 'src/ui/atoms/Text/Text';
 
 export const DisasterRecovery = () => {
-  const { t } = useTranslation();
+  const { t } = useCoreTranslation();
 
   const handleRefresh = () => {
     globalThis.location.reload();

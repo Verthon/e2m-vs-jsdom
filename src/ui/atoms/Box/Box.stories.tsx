@@ -5,7 +5,7 @@ import { fn } from 'storybook/test';
 import { Box } from './Box';
 
 const meta = {
-  title: 'Box',
+  title: 'Atoms/Box',
   component: Box,
   parameters: {
     layout: 'centered',

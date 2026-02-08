@@ -3,12 +3,12 @@ import { useNavigate } from "react-router";
 import * as z from "zod/mini";
 import { Form } from "@base-ui/react/form";
 
-import { useTranslation } from "src/i18n/useTranslation";
-import { Button } from "src/ui/Button/Button";
-import { Field } from "src/ui/field/Field";
+import { useCoreTranslation } from "src/core/i18n/useCoreTranslation";
 import { useLogin } from "../hooks/useLogin";
+import { Field } from "src/ui/organisms/Field/Field";
+import { Button } from "src/ui/atoms/Button/Button";
 
-const createSchema = (t: ReturnType<typeof useTranslation>["t"]) =>
+const createSchema = (t: ReturnType<typeof useCoreTranslation>["t"]) =>
   z.object({
     email: z
       .email({ error: t("core.auth.login.error.emailInvalid") })
@@ -24,7 +24,7 @@ const createSchema = (t: ReturnType<typeof useTranslation>["t"]) =>
   });
 
 export const LoginForm = () => {
-  const { t } = useTranslation();
+  const { t } = useCoreTranslation();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const { login, isPending } = useLogin();
@@ -101,13 +101,12 @@ export const LoginForm = () => {
       </div>
 
       <div className="text-center">
-        <button
+        <Button
           type="button"
-          className="text-sm text-emerald-800 hover:text-emerald-900 focus:outline-none focus:underline"
-          disabled={isPending}
+          isLoading={isPending}
         >
           {t("core.auth.login.forgotPassword")}
-        </button>
+        </Button>
       </div>
     </Form>
   );
