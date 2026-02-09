@@ -17,81 +17,51 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Default primary button with medium size.
+ * Default primary button (h-14, emerald-800 background).
  */
 export const Default: Story = {
   args: {
-    children: 'Click me',
+    children: 'Next',
   },
 };
 
 /**
- * Primary variant is the main call-to-action style.
+ * Primary variant with shadow, bold text, and emerald color scheme.
+ * Height: 56px (h-14), includes focus ring for accessibility.
  */
 export const Primary: Story = {
   args: {
     variant: 'primary',
-    children: 'Primary Button',
+    children: 'Next',
   },
 };
 
 /**
- * Secondary variant for less prominent actions.
+ * Outlined variant with transparent background and border.
+ * Height: 48px (h-12), supports dark mode.
  */
-export const Secondary: Story = {
+export const Outlined: Story = {
   args: {
-    variant: 'secondary',
-    children: 'Secondary Button',
+    variant: 'outlined',
+    children: 'View Profile',
   },
 };
 
 /**
- * Outline variant with transparent background and border.
+ * Disabled primary button.
+ * Shows reduced opacity and prevents interactions while maintaining focus.
  */
-export const Outline: Story = {
+export const Disabled: Story = {
   args: {
-    variant: 'outline',
-    children: 'Outline Button',
-  },
-};
-
-/**
- * Ghost variant for subtle actions.
- */
-export const Ghost: Story = {
-  args: {
-    variant: 'ghost',
-    children: 'Ghost Button',
-  },
-};
-
-/**
- * Small size button.
- */
-export const Small: Story = {
-  args: {
-    size: 'sm',
-    children: 'Small Button',
-  },
-};
-
-/**
- * Medium size button (default).
- */
-export const Medium: Story = {
-  args: {
-    size: 'md',
-    children: 'Medium Button',
-  },
-};
-
-/**
- * Large size button.
- */
-export const Large: Story = {
-  args: {
-    size: 'lg',
-    children: 'Large Button',
+    variant: 'primary',
+    isDisabled: true,
+    ariaLabel: 'Please select a doctor to continue',
+    children: (
+      <>
+        Next
+        <span className="material-symbols-outlined">arrow_forward</span>
+      </>
+    ),
   },
 };
 
@@ -125,6 +95,7 @@ export const LoadingStory = {
 
 /**
  * Loading state on primary variant.
+ * Shows spinner and prevents click handling while keeping button focusable.
  */
 export const LoadingPrimary: Story = {
   args: {
@@ -135,11 +106,11 @@ export const LoadingPrimary: Story = {
 };
 
 /**
- * Loading state on secondary variant.
+ * Loading state on outlined variant.
  */
-export const LoadingSecondary: Story = {
+export const LoadingOutlined: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'outlined',
     isLoading: true,
     children: 'Processing',
   },
@@ -174,7 +145,7 @@ export const LongText: Story = {
 /**
  * Full width loading button - common pattern for form submissions.
  */
-export const FullWidthisLoading: Story = {
+export const FullWidthLoading: Story = {
   args: {
     fullWidth: true,
     isLoading: true,
@@ -191,28 +162,29 @@ export const FullWidthisLoading: Story = {
 };
 
 /**
- * All size variants side by side for comparison.
+ * All variants side by side for comparison.
+ * Shows both primary (h-14, emerald) and outlined (h-12, border) styles.
  */
-export const AllSizes = {
+export const AllVariants = {
   render: () => (
     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
+      <Button variant="primary">Next</Button>
+      <Button variant="outlined">View Profile</Button>
     </div>
   ),
 };
 
 /**
- * All variants side by side for comparison.
+ * Button with icon - demonstrates gap spacing between elements.
  */
-export const AllVariants = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-    </div>
-  ),
+export const WithIcon: Story = {
+  args: {
+    variant: 'primary',
+    children: (
+      <>
+        Continue
+        <span className="material-symbols-outlined">arrow_forward</span>
+      </>
+    ),
+  },
 };

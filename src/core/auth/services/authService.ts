@@ -74,3 +74,17 @@ export const login = async (data: LoginPayload): Promise<UserResponse> => {
 
   return response.json();
 };
+
+export const logout = async (): Promise<void> => {
+  const response = await fetch(`${apiUrl}/logout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to logout: ${response.statusText}`);
+  }
+};

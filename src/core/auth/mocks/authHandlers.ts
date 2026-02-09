@@ -27,5 +27,9 @@ export const createAuthHandlers = (baseUrl: string) => {
         email: body.email,
       });
     }),
+
+    http.post(`${baseUrl}/logout`, () => {
+      return new HttpResponse(null, { status: 200 });
+    }),
   ];
 };

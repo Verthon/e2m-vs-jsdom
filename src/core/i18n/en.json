@@ -43,5 +43,10 @@
   "core.scroll.scrollToTop": "Scroll to top",
   "core.disaster.title": "Oops! Something went wrong",
   "core.disaster.message": "We encountered an unexpected error. Please try refreshing the page to continue.",
-  "core.disaster.refreshButton": "Refresh page"
+  "core.disaster.refreshButton": "Refresh page",
+  "core.nav.brand": "Flatline",
+  "core.nav.myAppointments": "My appointments",
+  "core.nav.login": "Login",
+  "core.nav.signup": "Sign up",
+  "core.nav.logout": "Log out"
 }

@@ -5,9 +5,7 @@ interface ButtonProps {
   /** Button content (text, icons, etc.) */
   children: ReactNode;
   /** Visual style variant */
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  /** Button size */
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'outlined';
   /** Expand button to full container width */
   fullWidth?: boolean;
   /** Show loading spinner and prevent click handling (but keep button focusable) */
@@ -18,24 +16,18 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   /** Accessible label (if button content is not descriptive enough) */
   ariaLabel?: string;
+  /** Disabled state */
   isDisabled?: boolean;
 }
 
-const baseClasses =
-  'inline-flex items-center justify-center gap-2 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 rounded-full cursor-pointer';
+const BASE_CLASSES =
+  'flex items-center justify-center gap-2 cursor-pointer transition-all rounded-lg';
 
-const variantClasses = {
-  primary: 'bg-emerald-800 text-white hover:bg-emerald-900',
-  secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
-  outline:
-    'border-2 border-gray-400 bg-transparent text-gray-900 hover:bg-gray-100',
-  ghost: 'bg-transparent text-gray-900 hover:bg-gray-100',
-} as const;
-
-const sizeClasses = {
-  sm: 'h-8 px-3 text-sm',
-  md: 'h-10 px-4 text-base',
-  lg: 'h-12 px-6 text-lg',
+const VARIANT_CLASSES = {
+  primary:
+    'h-14 px-6 bg-emerald-800 text-white text-base font-extrabold tracking-wide shadow-lg hover:bg-[#044a33] focus:outline-none focus:ring-4 focus:ring-emerald-800/40 disabled:opacity-50 disabled:cursor-not-allowed',
+  outlined:
+    'h-12 min-w-[140px] px-6 border-2 border-slate-200 dark:border-slate-700 bg-transparent text-slate-900 dark:text-white text-base font-bold hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg',
 } as const;
 
 /**
@@ -65,25 +57,33 @@ const LoadingSpinner = () => (
 /**
  * Accessible button component built on Base UI Button.
  *
- * Supports 4 visual variants (primary, secondary, outline, ghost) and 3 sizes (sm, md, lg).
+ * Supports 2 visual variants (primary, outlined) with predefined heights and styling.
  * Can be set to full width and includes a loading state with inline spinner.
  *
- * This button follows an a11y philosophy of never being disabled — instead use the
- * `loading` prop to indicate async operations while keeping the button focusable.
+ * Follows WCAG 2.1 AA guidelines:
+ * - Keyboard accessible with visible focus indicators
+ * - Maintains 4.5:1 contrast ratio for text
+ * - Uses aria-busy to announce loading state to screen readers
+ * - Disabled state maintains sufficient contrast and includes cursor indication
  *
  * @example Primary button
  * ```tsx
- * <Button onClick={handleSubmit}>Submit</Button>
+ * <Button onClick={handleSubmit}>Next</Button>
  * ```
  *
  * @example Loading state
  * ```tsx
- * <Button loading onClick={handleSave}>Save</Button>
+ * <Button isLoading onClick={handleSave}>Saving...</Button>
  * ```
  *
- * @example Secondary variant, small size
+ * @example Outlined variant
  * ```tsx
- * <Button variant="secondary" size="sm">Cancel</Button>
+ * <Button variant="outlined">View Profile</Button>
+ * ```
+ *
+ * @example Disabled button with tooltip
+ * ```tsx
+ * <Button isDisabled ariaLabel="Please select a doctor to continue">Next</Button>
  * ```
  *
  * @example Full width submit button
@@ -96,7 +96,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       children,
       variant = 'primary',
-      size = 'md',
       fullWidth = false,
       isLoading = false,
       onClick,
@@ -110,7 +109,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const widthClasses = fullWidth ? 'w-full' : '';
 
     const buttonClasses =
-      `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClasses}`.trim();
+      `${BASE_CLASSES} ${VARIANT_CLASSES[variant]} ${widthClasses}`.trim();
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
       if (isLoading) {

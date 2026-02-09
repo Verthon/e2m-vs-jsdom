@@ -1,5 +1,5 @@
 import { queryOptions, mutationOptions } from '@tanstack/react-query';
-import { fetchMe, fetchUser, login, register } from '../services/authService';
+import { fetchMe, fetchUser, login, register, logout } from '../services/authService';
 import type { LoginPayload, RegisterPayload } from '../types';
 
 export const authQueries = {
@@ -33,5 +33,9 @@ export const authMutations = {
   register: () =>
     mutationOptions({
       mutationFn: (data: RegisterPayload) => register(data),
+    }),
+  logout: () =>
+    mutationOptions({
+      mutationFn: logout,
     }),
 } as const;
