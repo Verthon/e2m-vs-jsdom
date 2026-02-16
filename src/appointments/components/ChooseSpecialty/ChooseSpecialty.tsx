@@ -1,0 +1,157 @@
+import { useState } from 'react';
+import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
+
+type Specialty = 'gp' | 'psychiatry' | 'dermatologist';
+
+interface SpecialtyOption {
+  id: Specialty;
+  icon: React.ReactElement;
+  titleKey: 'appointments.chooseSpecialty.specialties.gp.title' | 'appointments.chooseSpecialty.specialties.psychiatry.title' | 'appointments.chooseSpecialty.specialties.dermatologist.title';
+  descriptionKey: 'appointments.chooseSpecialty.specialties.gp.description' | 'appointments.chooseSpecialty.specialties.psychiatry.description' | 'appointments.chooseSpecialty.specialties.dermatologist.description';
+}
+
+const StethoscopeIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C11.2597 6 10.6134 6.4022 10.2676 7H10C8.34315 7 7 8.34315 7 10V19H9V10C9 9.44772 9.44772 9 10 9H10.2676C10.6134 9.5978 11.2597 10 12 10Z" fill="currentColor"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M10.1602 19L9 19H7C6.44772 19 5.99531 19.4487 6.04543 19.9987C6.27792 22.5499 7.39568 24.952 9.22186 26.7782C10.561 28.1173 12.2098 29.0755 14 29.583V32C14 33.3064 14.835 34.4177 16.0004 34.8294C16.043 38.7969 19.2725 42 23.25 42C27.2541 42 30.5 38.7541 30.5 34.75V30.75C30.5 28.6789 32.1789 27 34.25 27C36.3211 27 38 28.6789 38 30.75V33.1707C36.8348 33.5825 36 34.6938 36 36C36 37.6569 37.3431 39 39 39C40.6569 39 42 37.6569 42 36C42 34.6938 41.1652 33.5825 40 33.1707V30.75C40 27.5744 37.4256 25 34.25 25C31.0744 25 28.5 27.5744 28.5 30.75V34.75C28.5 37.6495 26.1495 40 23.25 40C20.3769 40 18.0429 37.6921 18.0006 34.8291C19.1655 34.4171 20 33.306 20 32V29.583C21.7902 29.0755 23.4391 28.1173 24.7782 26.7782C26.6044 24.952 27.7221 22.5499 27.9546 19.9987C28.0048 19.4487 27.5523 19 27 19L27 10C27 8.34315 25.6569 7 24 7H23.7324C23.3866 6.4022 22.7403 6 22 6C20.8954 6 20 6.89543 20 8C20 9.10457 20.8954 10 22 10C22.7403 10 23.3866 9.5978 23.7324 9H24C24.5523 9 25 9.44772 25 10V19H23.8399C23.2876 19 22.8486 19.4509 22.7545 19.9952C22.5505 21.1746 21.9872 22.2717 21.1294 23.1294C20.0343 24.2246 18.5489 24.8399 17 24.8399C15.4512 24.8399 13.9658 24.2246 12.8706 23.1294C12.0129 22.2717 11.4495 21.1746 11.2455 19.9952C11.1514 19.4509 10.7124 19 10.1602 19ZM24.5805 21H25.775C25.4013 22.6396 24.5721 24.1559 23.364 25.364C21.6762 27.0518 19.387 28 17 28C14.6131 28 12.3239 27.0518 10.6361 25.364C9.42797 24.1559 8.59877 22.6396 8.22502 21L9.41953 21C9.77024 22.3291 10.4676 23.5548 11.4564 24.5436C12.9267 26.0139 14.9208 26.8399 17 26.8399C19.0793 26.8399 21.0734 26.0139 22.5437 24.5436C23.5325 23.5548 24.2298 22.3291 24.5805 21ZM39 35C39.5523 35 40 35.4477 40 36C40 36.5523 39.5523 37 39 37C38.4477 37 38 36.5523 38 36C38 35.4477 38.4477 35 39 35ZM18 30V32C18 32.5523 17.5523 33 17 33C16.4477 33 16 32.5523 16 32V30H18Z" fill="currentColor"/>
+  </svg>
+);
+
+const PsychologyIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path fillRule="evenodd" clipRule="evenodd" d="M6 9C6 7.34315 7.34315 6 9 6H39C40.6569 6 42 7.34315 42 9V39C42 40.6569 40.6569 42 39 42H9C7.34315 42 6 40.6569 6 39V9ZM9 8H39C39.5523 8 40 8.44771 40 9V39C40 39.5523 39.5523 40 39 40H25.0141V33.9998C25.0141 33.9998 25.8472 34.273 27.0141 34.4595C27.3071 34.5063 27.6212 34.5477 27.9484 34.5779C30.6654 34.8285 34.2881 34.3086 34.2881 29.7536C34.2881 29.7536 36.7302 29.3808 36.9775 28.0272C37.2248 26.6736 35.3494 24.9864 35.3494 24.9864C34.715 23.6717 34.7315 22.5601 34.7501 21.2979C34.7554 20.9405 34.7609 20.5708 34.7518 20.1812C34.7095 18.4855 34.155 16.8372 33.1546 15.4336C32.059 14.0975 30.6223 13.0507 28.9813 12.3929C26.899 11.4729 24.6305 10.9975 22.3349 11C19.3287 11 16.4456 12.1368 14.3199 14.1603C12.1942 16.1838 11 18.9282 11 21.7898C11 25.2327 13.0325 27.8888 15.6704 29.8604V40H9C8.44772 40 8 39.5523 8 39V9C8 8.44772 8.44771 8 9 8ZM26.4913 22.4691C26.3787 22.5951 26.32 22.6608 25.9665 22.6608C25.4083 22.6608 24.863 22.4969 24.402 22.1906C24.0782 22.5245 23.6814 22.783 23.2408 22.9471C22.8421 23.1384 22.6701 23.4186 22.4583 23.7637C22.4204 23.8255 22.3812 23.8894 22.3392 23.9551C22.0627 24.3884 21.9164 24.8884 21.9171 25.3985V28.2711H18.9444C18.921 28.0788 18.8912 27.8889 18.8509 27.7026L18.8462 27.6812C18.7573 27.2791 18.6185 26.8945 18.3885 26.5408C18.0479 26.0171 17.591 25.5744 17.0515 25.2452C16.5832 25.0494 16.1789 24.7326 15.8823 24.3292C15.5857 23.9258 15.4082 23.4512 15.3688 22.9567C14.8814 22.4546 14.6102 21.7898 14.6111 21.099C14.6074 20.5035 14.8083 19.9238 15.1819 19.452C15.1131 19.2186 15.08 18.9766 15.0835 18.7338C15.0825 18.1532 15.2733 17.5876 15.6276 17.1204L17.0515 16.1389C17.2699 15.6609 17.6259 15.2546 18.0764 14.9692C18.5268 14.6837 19.0526 14.5312 19.5902 14.5302C19.8122 14.5315 20.0334 14.5572 20.2495 14.6068C20.7068 14.1921 21.2942 13.9393 21.9171 13.8889L24.9424 14.0939C25.6101 14.2546 26.1938 14.6484 26.5825 15.2005H26.7793L28.5273 15.7958C29.0231 16.1824 29.3681 16.7225 29.505 17.3262C30.1049 17.5797 30.5971 18.0259 30.8993 18.5903C31.2014 19.1546 31.2953 19.8029 31.165 20.4265C31.0511 20.9722 30.7716 21.47 30.3655 21.8572C30.3075 21.9125 30.2469 21.9655 30.1838 22.0161L28.3931 22.6503C28.3491 22.6508 28.3051 22.6502 28.2612 22.6487L28.2474 22.6482C27.7346 22.6279 27.2365 22.47 26.8089 22.1906C26.6397 22.303 26.5565 22.3962 26.4913 22.4691ZM30.1388 26.1668C30.7371 26.1668 31.2222 25.6817 31.2222 25.0834C31.2222 24.5922 30.8952 24.1774 30.4471 24.0446L30.4354 24.0412C30.3411 24.0144 30.2417 24.0001 30.1388 24.0001C29.7682 24.0001 29.4411 24.1862 29.2458 24.47L29.2405 24.4777C29.1237 24.6506 29.0555 24.8591 29.0555 25.0834C29.0555 25.6817 29.5405 26.1668 30.1388 26.1668ZM21.8333 31.6812H18.9445V29.6812H21.8333V31.6812ZM18.9445 38.2869H21.8333V36.2869H18.9445V38.2869ZM21.8333 34.959H18.9445V32.959H21.8333V34.959Z" fill="currentColor"/>
+  </svg>
+);
+
+const DermatologyIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M6.99994 8C6.69066 8 6.38458 8.01274 6.08216 8.03769L5.91772 6.04446C6.27477 6.015 6.63572 6 6.99994 6C14.1796 6 19.9999 11.8203 19.9999 19V20.6972L22.7955 24.8906C23.6816 26.2197 22.7288 28 21.1314 28H19.9999V30C19.9999 30.5523 19.5522 31 18.9999 31H17.9999C16.8954 31 15.9999 31.8954 15.9999 33H18.9999C19.5522 33 19.9999 33.4477 19.9999 34V37C19.9999 38.4477 19.2303 39.7147 18.0826 40.4156C17.3678 40.8521 16.5993 40.9101 15.9221 40.8209C15.2573 40.7333 14.6205 40.4968 14.0967 40.2723L9.99994 38.5165V43H7.99994V37C7.99994 36.6639 8.16883 36.3502 8.44945 36.1652C8.73008 35.9801 9.0849 35.9484 9.39386 36.0809L14.8846 38.434C15.3566 38.6363 15.7929 38.7866 16.1833 38.838C16.5613 38.8878 16.8303 38.8369 17.0401 38.7087C17.6179 38.3559 17.9999 37.7221 17.9999 37V35H14.9999C14.4477 35 13.9999 34.5523 13.9999 34V33C13.9999 30.7909 15.7908 29 17.9999 29V27C17.9999 26.4477 18.4477 26 18.9999 26L21.1314 26L18.1679 21.5547C18.0584 21.3904 17.9999 21.1974 17.9999 21V19C17.9999 12.9249 13.0751 8 6.99994 8Z" fill="currentColor"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M36.7201 15.034C36.1873 14.8919 35.6399 15.2079 35.4966 15.7404L35.0044 17.5697C34.7386 17.4511 34.4343 17.4542 34.1709 17.5782C33.9058 17.7031 33.7087 17.9379 33.6319 18.2208L31.2468 27.0002H28C27.4478 27.0002 27.0001 27.4478 27 28H25C24.4477 28 24 28.4477 24 29V34C24 34.5523 24.4477 35 25 35H27C27 35.5523 27.4477 36.0002 28 36.0002H34.204C36.4544 36.0002 38.4275 34.4969 39.0247 32.3272L41.9641 21.6488C42.0947 21.1744 41.8608 20.6755 41.4126 20.4725L41.1192 20.3396L41.8962 17.4522C41.9652 17.1958 41.9293 16.9224 41.7966 16.6924C41.6638 16.4624 41.4449 16.2946 41.1883 16.2262L36.7201 15.034ZM29 34.0002H34.204C35.5542 34.0002 36.7381 33.0982 37.0964 31.7964L39.7764 22.0604L35.2239 19.9894L32.9764 28.2624C32.858 28.6979 32.4626 29.0002 32.0113 29.0002H29V34.0002ZM36.8202 18.5183L39.2417 19.6199L39.7045 17.9002L37.1686 17.2237L36.8202 18.5183ZM26 30H27V33H26V30Z" fill="currentColor"/>
+    <path d="M14.5 23C15.3284 23 16 22.3284 16 21.5C16 20.6716 15.3284 20 14.5 20C13.6716 20 13 20.6716 13 21.5C13 22.3284 13.6716 23 14.5 23Z" fill="currentColor"/>
+  </svg>
+);
+
+const SPECIALTY_OPTIONS: SpecialtyOption[] = [
+  {
+    id: 'gp',
+    icon: <StethoscopeIcon />,
+    titleKey: 'appointments.chooseSpecialty.specialties.gp.title',
+    descriptionKey: 'appointments.chooseSpecialty.specialties.gp.description',
+  },
+  {
+    id: 'psychiatry',
+    icon: <PsychologyIcon />,
+    titleKey: 'appointments.chooseSpecialty.specialties.psychiatry.title',
+    descriptionKey: 'appointments.chooseSpecialty.specialties.psychiatry.description',
+  },
+  {
+    id: 'dermatologist',
+    icon: <DermatologyIcon />,
+    titleKey: 'appointments.chooseSpecialty.specialties.dermatologist.title',
+    descriptionKey: 'appointments.chooseSpecialty.specialties.dermatologist.description',
+  },
+];
+
+interface ChooseSpecialtyProps {
+  readonly onSpecialtyChange?: (specialty: Specialty | null) => void;
+}
+
+export function ChooseSpecialty({ onSpecialtyChange }: ChooseSpecialtyProps) {
+  const { t } = useAppointmentsTranslation();
+  const [selected, setSelected] = useState<Specialty | null>(null);
+
+  const handleChange = (value: Specialty) => {
+    setSelected(value);
+    onSpecialtyChange?.(value);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900">
+          {t('appointments.chooseSpecialty.heading')}
+        </h2>
+        <p className="mt-2 text-sm text-slate-500">
+          {t('appointments.chooseSpecialty.description')}
+        </p>
+      </div>
+
+      {/* SpecialtyCardGroup — extract to its own component once 2+ steps share this pattern */}
+      <div role="radiogroup" aria-label={t('appointments.chooseSpecialty.heading')} className="space-y-3">
+        {SPECIALTY_OPTIONS.map((option) => {
+          const isSelected = selected === option.id;
+
+          return (
+            /* SpecialtyCard */
+            <label
+              key={option.id}
+              className={[
+                'flex items-center gap-4 rounded-xl border-2 p-4 cursor-pointer transition-all',
+                'focus-within:ring-2 focus-within:ring-emerald-800 focus-within:ring-offset-2',
+                isSelected
+                  ? 'border-emerald-800 bg-emerald-50'
+                  : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50',
+              ].join(' ')}
+            >
+              <input
+                type="radio"
+                value={option.id}
+                checked={isSelected}
+                onChange={() => handleChange(option.id)}
+                className="sr-only"
+              />
+
+              {/* SpecialtyCard icon area */}
+              <div
+                className={[
+                  'flex h-12 w-12 shrink-0 items-center justify-center rounded-full',
+                  isSelected ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500',
+                ].join(' ')}
+              >
+                {option.icon}
+              </div>
+
+              {/* SpecialtyCard text content */}
+              <div className="flex-1">
+                <p className={['font-semibold text-sm', isSelected ? 'text-emerald-900' : 'text-slate-800'].join(' ')}>
+                  {t(option.titleKey)}
+                </p>
+                <p className="mt-0.5 text-xs text-slate-500">
+                  {t(option.descriptionKey)}
+                </p>
+              </div>
+
+              {/* SpecialtyCard check indicator */}
+              <div
+                className={[
+                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+                  isSelected
+                    ? 'border-emerald-800 bg-emerald-800'
+                    : 'border-slate-300 bg-white',
+                ].join(' ')}
+                aria-hidden="true"
+              >
+                {isSelected && (
+                  <svg
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    className="h-3 w-3"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 6l3 3 5-5"
+                      stroke="white"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </div>
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

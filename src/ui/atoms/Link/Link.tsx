@@ -45,11 +45,12 @@ type LinkProps<Element extends ElementType = 'a'> = Element extends 'a'
 export const Link = <Element extends ElementType = 'a'>({
   component,
   children,
+  ...rest
 }: LinkProps<Element>) => {
   const Component = component || 'a';
 
   return (
-    <Component className={BASE_LINK_CLASSES}>
+    <Component className={BASE_LINK_CLASSES} {...rest}>
       {children}
     </Component>
   );

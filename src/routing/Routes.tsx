@@ -27,6 +27,13 @@ const NotFoundPage: LazyComponent = lazy(
     ),
 );
 
+const AppointmentsPage: LazyComponent = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "appointments-page" */ "../appointments/Appointments"
+    ),
+);
+
 const RootLayout = () => <Outlet />;
 
 export const AppRoutes = () => (
@@ -36,6 +43,10 @@ export const AppRoutes = () => (
         <Route path={routesConfig.home} element={<LandingPage />} />
         <Route path={routesConfig.login} element={<LoginPage />} />
         <Route path={routesConfig.signup} element={<RegisterPage />} />
+        <Route
+          path={routesConfig.appointments}
+          element={<AppointmentsPage />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
