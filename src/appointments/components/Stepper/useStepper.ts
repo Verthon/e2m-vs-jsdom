@@ -1,85 +1,89 @@
 import { useCallback } from 'react';
 import { useStepperContext } from './StepperContext';
-import type { StepperAction, StepState } from './types';
-import type React from 'react';
+import type { StepState, StepMeta } from './types';
 
-export interface UseStepperReturn {
-  currentStep: number;
-  totalSteps: number;
-  direction: 'forward' | 'backward';
+export type UseStepperReturn = {
+  activeKey: string;
+  orderedKeys: string[];
+  direction: 'forward' | 'backward' | null;
   isFirst: boolean;
   isLast: boolean;
-  steps: Record<number, StepState>;
-
-  next: () => void;
+  steps: Map<string, StepState>;
+  meta: Map<string, StepMeta>;
+  next: () => Promise<void>;
   prev: () => void;
-  goTo: (step: number) => void;
-  completeStep: (step: number) => void;
-  invalidateStep: (step: number) => void;
-  setStepValidity: (step: number, valid: boolean) => void;
+  goTo: (key: string) => Promise<void>;
+  completeStep: (key: string) => void;
+  setStepValidity: (key: string, valid: boolean) => void;
+  skip: () => void;
   reset: () => void;
+};
 
-  dispatch: React.Dispatch<StepperAction>;
-}
-
-export function useStepper(): UseStepperReturn {
-  const { state, dispatch, currentStep, totalSteps, isFirst, isLast } =
+export const useStepper = (): UseStepperReturn => {
+  const { state, dispatch, orderedKeys, activeKey, isFirst, isLast, direction, registration } =
     useStepperContext();
 
-  const next = useCallback(() => {
-    dispatch({ type: 'NEXT' });
-  }, [dispatch]);
+  const next = useCallback(async () => {
+    const meta = registration.getMeta(activeKey);
+    if (meta?.onBeforeLeave) {
+      const canLeave = await meta.onBeforeLeave();
+      if (!canLeave) return;
+    }
+    dispatch({ type: 'NEXT', orderedKeys });
+  }, [dispatch, orderedKeys, activeKey, registration]);
 
   const prev = useCallback(() => {
-    dispatch({ type: 'PREV' });
-  }, [dispatch]);
+    dispatch({ type: 'PREV', orderedKeys });
+  }, [dispatch, orderedKeys]);
 
   const goTo = useCallback(
-    (step: number) => {
-      dispatch({ type: 'GO_TO', step });
+    async (key: string) => {
+      const meta = registration.getMeta(activeKey);
+      if (meta?.onBeforeLeave) {
+        const canLeave = await meta.onBeforeLeave();
+        if (!canLeave) return;
+      }
+      dispatch({ type: 'GO_TO', key });
     },
-    [dispatch]
+    [dispatch, activeKey, registration]
   );
 
   const completeStep = useCallback(
-    (step: number) => {
-      dispatch({ type: 'COMPLETE_STEP', step });
-    },
-    [dispatch]
-  );
-
-  const invalidateStep = useCallback(
-    (step: number) => {
-      dispatch({ type: 'INVALIDATE_STEP', step });
+    (key: string) => {
+      dispatch({ type: 'COMPLETE_STEP', key });
     },
     [dispatch]
   );
 
   const setStepValidity = useCallback(
-    (step: number, valid: boolean) => {
-      dispatch({ type: 'SET_STEP_VALIDITY', step, valid });
+    (key: string, valid: boolean) => {
+      dispatch({ type: 'SET_VALIDITY', key, valid });
     },
     [dispatch]
   );
 
+  const skip = useCallback(() => {
+    dispatch({ type: 'SKIP_STEP', orderedKeys });
+  }, [dispatch, orderedKeys]);
+
   const reset = useCallback(() => {
-    dispatch({ type: 'RESET' });
-  }, [dispatch]);
+    dispatch({ type: 'RESET', initialKey: orderedKeys[0] ?? '' });
+  }, [dispatch, orderedKeys]);
 
   return {
-    currentStep,
-    totalSteps,
-    direction: state.direction,
+    activeKey,
+    orderedKeys,
+    direction,
     isFirst,
     isLast,
     steps: state.steps,
+    meta: registration.getAllMeta(),
     next,
     prev,
     goTo,
     completeStep,
-    invalidateStep,
     setStepValidity,
+    skip,
     reset,
-    dispatch,
   };
-}
+};

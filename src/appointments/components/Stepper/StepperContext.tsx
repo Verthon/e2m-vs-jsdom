@@ -1,121 +1,85 @@
-import React, { createContext, useContext, useMemo, useReducer, useRef } from 'react';
+import { createContext, useContext, useReducer, useMemo } from 'react';
+import type { ReactNode, Dispatch } from 'react';
 import { stepperReducer, createInitialState } from './stepperReducer';
-import { useStepAnnouncer } from './useStepAnnouncer';
-import { useStepDocumentTitle } from './useStepDocumentTitle';
+import { useRegistration } from './RegistrationContext';
 import type { StepperState, StepperAction } from './types';
 
-interface StepperContextValue {
+type RegistrationContextValue = ReturnType<typeof useRegistration>;
+
+type StepperContextValue = {
   state: StepperState;
-  dispatch: React.Dispatch<StepperAction>;
-  currentStep: number;
-  totalSteps: number;
+  dispatch: Dispatch<StepperAction>;
+  orderedKeys: string[];
+  activeKey: string;
   isFirst: boolean;
   isLast: boolean;
-  stepLabels: string[];
-}
-
-interface StepperProviderProps {
-  totalSteps: number;
-  initialStep?: number;
-  onComplete: () => void;
-  children: React.ReactNode;
-  ariaLabel?: string;
-}
+  direction: 'forward' | 'backward' | null;
+  registration: RegistrationContextValue;
+};
 
 const StepperContext = createContext<StepperContextValue | null>(null);
 
-function buildInitialState(totalSteps: number, initialStep: number): StepperState {
-  const base = createInitialState(totalSteps);
-  if (initialStep === 0) {
-    return base;
-  }
-  return {
-    ...base,
-    currentStep: initialStep,
-    steps: Object.fromEntries(
-      Array.from({ length: totalSteps }, (_, i) => [
-        i,
-        { completed: i < initialStep, valid: i < initialStep, visited: i <= initialStep },
-      ])
-    ),
-  };
-}
+const deriveDirection = (
+  orderedKeys: string[],
+  activeKey: string,
+  previousKey: string | null
+): 'forward' | 'backward' | null => {
+  if (previousKey === null) return null;
+  const activeIdx = orderedKeys.indexOf(activeKey);
+  const previousIdx = orderedKeys.indexOf(previousKey);
+  if (activeIdx === -1 || previousIdx === -1) return null;
+  return activeIdx > previousIdx ? 'forward' : 'backward';
+};
 
-function extractStepLabels(children: React.ReactNode): string[] {
-  const labels: string[] = [];
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.props && typeof child.props === 'object') {
-      const props = child.props as { index?: number; label?: string };
-      if (typeof props.index === 'number' && typeof props.label === 'string') {
-        labels[props.index] = props.label;
-      }
-    }
-  });
-  return labels;
-}
+type StepperProviderProps = {
+  children: ReactNode;
+  initialKey: string;
+  allKeys: string[];
+};
 
-export function StepperProvider({
-  totalSteps,
-  initialStep = 0,
-  onComplete,
-  children,
-  ariaLabel = 'Multi-step form',
-}: StepperProviderProps) {
+export const StepperProvider = ({ children, initialKey, allKeys }: StepperProviderProps) => {
+  const registration = useRegistration();
+
   const [state, dispatch] = useReducer(
     stepperReducer,
     undefined,
-    () => buildInitialState(totalSteps, initialStep)
+    () => createInitialState(initialKey, allKeys)
   );
 
-  const liveRegionRef = useRef<HTMLDivElement>(null);
+  const orderedKeys = useMemo(
+    () => registration.getOrderedKeys(),
+    [state.activeKey, registration]
+  );
 
-  const { currentStep } = state;
-  const stepLabels = extractStepLabels(children);
-  const stepLabel = stepLabels[currentStep] ?? '';
-  const stepAnnouncement = `Step ${currentStep + 1} of ${totalSteps}`;
+  const activeKey = state.activeKey;
+  const activeIdx = orderedKeys.indexOf(activeKey);
+  const isFirst = activeIdx <= 0;
+  const isLast = orderedKeys.length > 0 && activeIdx === orderedKeys.length - 1;
+  const direction = deriveDirection(orderedKeys, activeKey, state.previousKey);
 
-  useStepAnnouncer({ announcement: stepAnnouncement, liveRegionRef });
-  useStepDocumentTitle({ currentStep, totalSteps, stepLabel });
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (currentStep === totalSteps - 1) {
-      onComplete();
-    }
-  };
-
-  const contextValue: StepperContextValue = useMemo(
+  const value = useMemo<StepperContextValue>(
     () => ({
       state,
       dispatch,
-      currentStep,
-      totalSteps,
-      isFirst: currentStep === 0,
-      isLast: currentStep === totalSteps - 1,
-      stepLabels,
+      orderedKeys,
+      activeKey,
+      isFirst,
+      isLast,
+      direction,
+      registration,
     }),
-    [state, dispatch, currentStep, totalSteps, stepLabels]
+    [state, dispatch, orderedKeys, activeKey, isFirst, isLast, direction, registration]
   );
 
-  return (
-    <StepperContext.Provider value={contextValue}>
-      <form aria-label={ariaLabel} onSubmit={handleSubmit}>
-        <div
-          ref={liveRegionRef}
-          role="status"
-          aria-live="polite"
-          className="sr-only"
-        />
-        {children}
-      </form>
-    </StepperContext.Provider>
-  );
-}
+  return <StepperContext.Provider value={value}>{children}</StepperContext.Provider>;
+};
 
-export function useStepperContext(): StepperContextValue {
+export const useStepperContext = (): StepperContextValue => {
   const context = useContext(StepperContext);
   if (!context) {
     throw new Error('useStepperContext must be used within a StepperProvider');
   }
   return context;
-}
+};
+
+export { StepperContext };

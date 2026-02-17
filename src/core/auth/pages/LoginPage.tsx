@@ -1,7 +1,7 @@
 import { Shell } from 'src/core/shell/Shell';
 import { useCoreTranslation } from 'src/core/i18n/useCoreTranslation';
-import { Heading } from 'src/ui/heading/Heading';
-import { Text } from 'src/ui/text/Text';
+import { Heading } from 'src/ui/atoms/Heading/Heading';
+import { Text } from 'src/ui/atoms/Text/Text';
 
 import { LoginForm } from '../components/LoginForm';
 

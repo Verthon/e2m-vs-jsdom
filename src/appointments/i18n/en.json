@@ -42,5 +42,18 @@
   "appointments.chooseDoctor.description": "Select a healthcare provider to continue your booking.",
   "appointments.chooseDoctor.section": "Recommended Doctors",
   "appointments.chooseDoctor.selectLabel": "Select",
-  "appointments.chooseDoctor.viewProfile": "View Profile"
+  "appointments.chooseDoctor.viewProfile": "View Profile",
+  "appointments.steps.reviewAndConfirm": "Review & Confirm",
+  "appointments.reviewAndConfirm.heading": "Review your appointment details",
+  "appointments.reviewAndConfirm.specialty.label": "Medical Specialty",
+  "appointments.reviewAndConfirm.doctor.label": "Healthcare Professional",
+  "appointments.reviewAndConfirm.time.label": "Appointment Time",
+  "appointments.reviewAndConfirm.change": "Change",
+  "appointments.reviewAndConfirm.confirm": "Confirm appointment",
+  "appointments.reviewAndConfirm.timer.title": "Timeslot held for 5 minutes",
+  "appointments.reviewAndConfirm.timer.body": "Please complete your booking to secure this time. Remaining:",
+  "appointments.reviewAndConfirm.legal.prefix": "By confirming, you agree to our",
+  "appointments.reviewAndConfirm.legal.terms": "Terms of Service",
+  "appointments.reviewAndConfirm.legal.and": "and",
+  "appointments.reviewAndConfirm.legal.cancellation": "Cancellation Policy"
 }

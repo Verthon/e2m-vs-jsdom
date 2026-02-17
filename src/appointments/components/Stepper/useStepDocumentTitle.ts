@@ -1,24 +1,31 @@
 import { useEffect, useRef } from 'react';
+import { useStepperContext } from './StepperContext';
+import { useRegistration } from './RegistrationContext';
 
-interface UseStepDocumentTitleOptions {
-  currentStep: number;
-  totalSteps: number;
-  stepLabel: string;
-}
+export const useStepDocumentTitle = (
+  formatter: (step: number, total: number, label: string) => string
+): void => {
+  const { state, orderedKeys } = useStepperContext();
+  const { getMeta } = useRegistration();
 
-export function useStepDocumentTitle({ currentStep, totalSteps, stepLabel }: UseStepDocumentTitleOptions) {
-  const initialTitleRef = useRef<string>(document.title);
-  const stepAnnouncement = `Step ${currentStep + 1} of ${totalSteps}`;
+  const activeKey = state.activeKey;
+  const stepIndex = orderedKeys.indexOf(activeKey);
+  const total = orderedKeys.length;
+  const step = stepIndex === -1 ? 1 : stepIndex + 1;
+
+  const meta = getMeta(activeKey);
+  const label = typeof meta?.label === 'string' ? meta.label : '';
+
+  const previousTitleRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const prefix = stepLabel
-      ? `${stepAnnouncement}: ${stepLabel} – `
-      : `${stepAnnouncement} – `;
-
-    document.title = `${prefix}${initialTitleRef.current}`;
+    previousTitleRef.current = document.title;
+    document.title = formatter(step, total, label);
 
     return () => {
-      document.title = initialTitleRef.current;
+      if (previousTitleRef.current !== null) {
+        document.title = previousTitleRef.current;
+      }
     };
-  }, [currentStep, stepLabel, stepAnnouncement]);
-}
+  }, [step, total, label, formatter]);
+};

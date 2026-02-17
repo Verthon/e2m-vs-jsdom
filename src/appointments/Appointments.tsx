@@ -7,8 +7,9 @@ import { useAppointmentsTranslation } from "./i18n/useAppointmentsTranslation";
 import { ChooseSpecialty } from "./components/ChooseSpecialty/ChooseSpecialty";
 import { PickATime } from "./components/PickATime/PickATime";
 import { ChooseDoctor } from "./components/ChooseDoctor/ChooseDoctor";
+import { ReviewAndConfirm } from "./components/ReviewAndConfirm/ReviewAndConfirm";
 
-const TOTAL_STEPS = 3;
+const TOTAL_STEPS = 4;
 
 /* BookingHeader — extract once header is shared across multiple booking steps */
 function BookingHeader() {
@@ -122,6 +123,10 @@ const Appointments = () => {
 
             <Step index={2} label={t("appointments.steps.pickATime")}>
               <PickATime />
+            </Step>
+
+            <Step index={3} label={t("appointments.steps.reviewAndConfirm")}>
+              <ReviewAndConfirm />
             </Step>
           </div>
         </main>

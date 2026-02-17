@@ -8,7 +8,6 @@ export const TestRouterProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => (
   <MemoryRouter>
-    {/* <AppRoutes /> */}
     {children}
   </MemoryRouter>
 );

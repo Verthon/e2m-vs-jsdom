@@ -6,16 +6,19 @@ import { resolve, dirname } from "node:path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+function createPathsPlugin() {
+  return tsconfigPaths({
+    projects: [resolve(__dirname, "tsconfig.vitest.json")],
+    loose: true,
+  });
+}
+
 export default defineConfig({
-  plugins: [
-    tsconfigPaths({
-      projects: [resolve(__dirname, "tsconfig.vitest.json")],
-      loose: true,
-    }),
-  ],
+  plugins: [createPathsPlugin()],
   test: {
     projects: [
       {
+        plugins: [createPathsPlugin()],
         test: {
           include: ["**/*.unit.spec.ts"],
           name: "unit",
@@ -23,10 +26,13 @@ export default defineConfig({
         },
       },
       {
+        plugins: [createPathsPlugin()],
+        envPrefix: ["VITE_", "PUBLIC_"],
         test: {
-          include: ["**/*.integration.spec.ts"],
+          include: ["**/*.integration.spec.tsx"],
           name: "jsdom",
           environment: "jsdom",
+          setupFiles: ["src/test/setup.jsdom.ts"],
         },
       },
     ],

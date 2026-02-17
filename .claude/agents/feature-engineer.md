@@ -201,7 +201,7 @@ Before considering any implementation complete, verify:
 
 ## Decision-Making Framework
 
-1. **Before writing code**: Read existing files in the feature directory (if any) and adjacent features to understand established patterns. Use `grep` and file reading to discover conventions.
+1. **Before writing code**: Before writing code: Check your agent memory first. Only read existing files if working in an existing feature directory or if memory lacks the needed context.
 2. **When unsure about a pattern**: Look at `src/core/auth/` as the reference implementation.
 3. **When you need a generic UI component**: Check if it exists in `src/ui/`. If it does, import it. If it doesn't, STOP and tell the user to delegate to the design-system-engineer agent.
 4. **When implementing multi-step features**: Break them into vertical slices — types first, then services, then queries, then hooks, then components, then pages, then routing.

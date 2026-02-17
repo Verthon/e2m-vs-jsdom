@@ -1,16 +1,30 @@
-import type { StepperState, StepperAction } from './types';
+import type { StepState, StepperState, StepperAction } from './types';
 
-export const createInitialState = (totalSteps: number): StepperState => ({
-  currentStep: 0,
-  totalSteps,
-  direction: 'forward',
-  steps: Object.fromEntries(
-    Array.from({ length: totalSteps }, (_, i) => [
-      i,
-      { completed: false, valid: false, visited: i === 0 },
+export const createInitialState = (
+  firstKey: string,
+  allKeys: string[]
+): StepperState => ({
+  activeKey: firstKey,
+  previousKey: null,
+  steps: new Map<string, StepState>(
+    allKeys.map((key) => [
+      key,
+      { completed: false, valid: false, visited: key === firstKey },
     ])
   ),
 });
+
+const updateStep = (
+  steps: Map<string, StepState>,
+  key: string,
+  patch: Partial<StepState>
+): Map<string, StepState> => {
+  const current = steps.get(key);
+  if (!current) return steps;
+  const next = new Map(steps);
+  next.set(key, { ...current, ...patch });
+  return next;
+};
 
 export const stepperReducer = (
   state: StepperState,
@@ -18,100 +32,85 @@ export const stepperReducer = (
 ): StepperState => {
   switch (action.type) {
     case 'NEXT': {
-      const nextStep = Math.min(state.currentStep + 1, state.totalSteps - 1);
+      const { orderedKeys } = action;
+      const idx = orderedKeys.indexOf(state.activeKey);
+      if (idx === -1 || idx >= orderedKeys.length - 1) return state;
+
+      const currentStep = state.steps.get(state.activeKey);
+      if (!currentStep?.valid) return state;
+
+      const nextKey = orderedKeys[idx + 1];
+      const steps = updateStep(state.steps, nextKey, { visited: true });
+
       return {
-        ...state,
-        currentStep: nextStep,
-        direction: 'forward',
-        steps: {
-          ...state.steps,
-          [state.currentStep]: {
-            ...state.steps[state.currentStep],
-            visited: true,
-          },
-          [nextStep]: {
-            ...state.steps[nextStep],
-            visited: true,
-          },
-        },
+        activeKey: nextKey,
+        previousKey: state.activeKey,
+        steps,
       };
     }
 
     case 'PREV': {
-      const prevStep = Math.max(state.currentStep - 1, 0);
+      const { orderedKeys } = action;
+      const idx = orderedKeys.indexOf(state.activeKey);
+      if (idx <= 0) return state;
+
+      const prevKey = orderedKeys[idx - 1];
       return {
         ...state,
-        currentStep: prevStep,
-        direction: 'backward',
+        activeKey: prevKey,
+        previousKey: state.activeKey,
       };
     }
 
     case 'GO_TO': {
-      const targetStep = action.step;
-      const isAllowed =
-        targetStep <= state.currentStep || state.steps[targetStep]?.visited;
-
-      if (!isAllowed) {
-        return state;
-      }
-
-      const direction = targetStep > state.currentStep ? 'forward' : 'backward';
+      const targetStep = state.steps.get(action.key);
+      if (!targetStep?.visited) return state;
 
       return {
         ...state,
-        currentStep: targetStep,
-        direction,
+        activeKey: action.key,
+        previousKey: state.activeKey,
       };
     }
 
     case 'COMPLETE_STEP': {
       return {
         ...state,
-        steps: {
-          ...state.steps,
-          [action.step]: {
-            ...state.steps[action.step],
-            completed: true,
-            valid: true,
-          },
-        },
+        steps: updateStep(state.steps, action.key, {
+          completed: true,
+          valid: true,
+        }),
       };
     }
 
-    case 'INVALIDATE_STEP': {
+    case 'SKIP_STEP': {
+      const { orderedKeys } = action;
+      const idx = orderedKeys.indexOf(state.activeKey);
+      if (idx === -1 || idx >= orderedKeys.length - 1) return state;
+
+      const nextKey = orderedKeys[idx + 1];
+      const steps = updateStep(state.steps, nextKey, { visited: true });
+
       return {
-        ...state,
-        steps: {
-          ...state.steps,
-          [action.step]: {
-            ...state.steps[action.step],
-            completed: false,
-            valid: false,
-          },
-        },
+        activeKey: nextKey,
+        previousKey: state.activeKey,
+        steps,
       };
     }
 
-    case 'SET_STEP_VALIDITY': {
+    case 'SET_VALIDITY': {
       return {
         ...state,
-        steps: {
-          ...state.steps,
-          [action.step]: {
-            ...state.steps[action.step],
-            valid: action.valid,
-          },
-        },
+        steps: updateStep(state.steps, action.key, { valid: action.valid }),
       };
     }
 
     case 'RESET': {
-      return createInitialState(state.totalSteps);
+      const allKeys = Array.from(state.steps.keys());
+      return createInitialState(action.initialKey, allKeys);
     }
 
     default:
       return state;
   }
 };
-
-
