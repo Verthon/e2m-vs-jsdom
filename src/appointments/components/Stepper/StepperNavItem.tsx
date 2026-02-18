@@ -55,7 +55,7 @@ export const StepperNavItem = ({ stepKey, index, render }: StepperNavItemProps) 
         {content}
       </button>
     ) : (
-      <span inert="">{content}</span>
+      <span inert={true}>{content}</span>
     );
 
   const internalProps: useRender.ElementProps<'li'> = {
@@ -68,7 +68,7 @@ export const StepperNavItem = ({ stepKey, index, render }: StepperNavItemProps) 
     defaultTagName: 'li',
     render,
     state: renderState,
-    props: mergeProps<'li'>(internalProps),
+    props: mergeProps<'li'>(internalProps,{}),
   });
 
   return element;

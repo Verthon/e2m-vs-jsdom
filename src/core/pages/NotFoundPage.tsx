@@ -30,7 +30,7 @@ const NotFoundPage = () => {
             </Text>
           </div>
           <Link to="/">
-            <Button variant="primary" size="md">
+            <Button variant="primary">
               {t('core.notFound.backHome')}
             </Button>
           </Link>

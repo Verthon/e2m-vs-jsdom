@@ -9,8 +9,6 @@ import { PickATime } from "./components/PickATime/PickATime";
 import { ChooseDoctor } from "./components/ChooseDoctor/ChooseDoctor";
 import { ReviewAndConfirm } from "./components/ReviewAndConfirm/ReviewAndConfirm";
 
-const TOTAL_STEPS = 4;
-
 /* BookingHeader — extract once header is shared across multiple booking steps */
 function BookingHeader() {
   const { t } = useAppointmentsTranslation();
@@ -99,41 +97,59 @@ function BookingFooter() {
 const Appointments = () => {
   const { t } = useAppointmentsTranslation();
 
-  const handleComplete = () => {};
-
   return (
-    <StepperProvider totalSteps={TOTAL_STEPS} onComplete={handleComplete}>
-      <div className="flex min-h-screen flex-col bg-slate-50">
-        <BookingHeader />
+      <StepperProvider
+        initialKey="choose-specialty"
+        allKeys={[
+          "choose-specialty",
+          "choose-doctor",
+          "pick-a-time",
+          "review-and-confirm",
+        ]}
+      >
+        <div className="flex min-h-screen flex-col bg-slate-50">
+          <BookingHeader />
 
-        <main className="flex-1 px-6 py-8">
-          <div className="mx-auto max-w-4xl space-y-6">
-            <StepperProgress />
+          <main className="flex-1 px-6 py-8">
+            <div className="mx-auto max-w-4xl space-y-6">
+              <StepperProgress />
 
-            <Step index={0} label={t("appointments.steps.chooseSpecialty")}>
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-[7fr_5fr]">
-                <ChooseSpecialty />
-                <QuickGuide />
-              </div>
-            </Step>
+              <Step
+                stepKey="choose-specialty"
+                label={t("appointments.steps.chooseSpecialty")}
+              >
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[7fr_5fr]">
+                  <ChooseSpecialty />
+                  <QuickGuide />
+                </div>
+              </Step>
 
-            <Step index={1} label={t("appointments.steps.chooseDoctor")}>
-              <ChooseDoctor />
-            </Step>
+              <Step
+                stepKey="choose-doctor"
+                label={t("appointments.steps.chooseDoctor")}
+              >
+                <ChooseDoctor />
+              </Step>
 
-            <Step index={2} label={t("appointments.steps.pickATime")}>
-              <PickATime />
-            </Step>
+              <Step
+                stepKey="pick-a-time"
+                label={t("appointments.steps.pickATime")}
+              >
+                <PickATime />
+              </Step>
 
-            <Step index={3} label={t("appointments.steps.reviewAndConfirm")}>
-              <ReviewAndConfirm />
-            </Step>
-          </div>
-        </main>
+              <Step
+                stepKey="review-and-confirm"
+                label={t("appointments.steps.reviewAndConfirm")}
+              >
+                <ReviewAndConfirm />
+              </Step>
+            </div>
+          </main>
 
-        <BookingFooter />
-      </div>
-    </StepperProvider>
+          <BookingFooter />
+        </div>
+      </StepperProvider>
   );
 };
 

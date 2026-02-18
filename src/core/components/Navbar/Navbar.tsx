@@ -103,8 +103,6 @@ export const Navbar = () => {
                   size={32}
                 />
                 <Button
-                  variant="ghost"
-                  size="sm"
                   onClick={() => logout()}
                   isLoading={isLoggingOut}
                 >
@@ -122,7 +120,7 @@ export const Navbar = () => {
                 </Text>
               </Link>
               <Link component={RouterLink} to={routesConfig.signup}>
-                <Button variant="primary" size="sm">
+                <Button variant="primary">
                   {t("core.nav.signup")}
                 </Button>
               </Link>

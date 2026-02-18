@@ -1,7 +1,7 @@
-import { Shell } from 'src/core/shell/Shell';
 import { useCoreTranslation } from 'src/core/i18n/useCoreTranslation';
 
 import { RegisterForm } from '../components/RegisterForm';
+import { PublicLayout } from '../components/PublicLayout';
 import { Heading } from 'src/ui/atoms/Heading/Heading';
 import { Text } from 'src/ui/atoms/Text/Text';
 
@@ -9,7 +9,7 @@ const RegisterPage = () => {
   const { t } = useCoreTranslation();
 
   return (
-    <Shell>
+    <PublicLayout>
       <div className="flex items-center justify-center bg-gray-50 px-4 py-8 min-h-full">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
@@ -28,7 +28,7 @@ const RegisterPage = () => {
           </div>
         </div>
       </div>
-    </Shell>
+    </PublicLayout>
   );
 };
 

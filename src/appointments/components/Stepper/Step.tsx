@@ -2,17 +2,19 @@ import type { ReactNode } from 'react';
 import { useStepperContext } from './StepperContext';
 
 interface StepProps {
-  index: number;
-  label: string;
-  optional?: boolean;
-  children: ReactNode;
+  readonly stepKey: string;
+  readonly label: string;
+  readonly optional?: boolean;
+  readonly children: ReactNode;
 }
 
-export function Step({ index, label, optional, children }: StepProps) {
-  const { currentStep, totalSteps } = useStepperContext();
-  const isActive = index === currentStep;
+export function Step({ stepKey, label, optional, children }: StepProps) {
+  const { activeKey, orderedKeys } = useStepperContext();
+  const isActive = stepKey === activeKey;
+  const stepIndex = orderedKeys.indexOf(stepKey);
+  const totalSteps = orderedKeys.length;
 
-  const legendText = `${label} (Step ${index + 1} of ${totalSteps})${optional ? ' - Optional' : ''}`;
+  const legendText = `${label} (Step ${stepIndex + 1} of ${totalSteps})${optional ? ' - Optional' : ''}`;
 
   return (
     <fieldset

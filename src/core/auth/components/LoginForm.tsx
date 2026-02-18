@@ -79,7 +79,6 @@ export const LoginForm = () => {
         <Button
           type="submit"
           variant="primary"
-          size="lg"
           fullWidth
           isDisabled={isPending}
         >
@@ -90,8 +89,6 @@ export const LoginForm = () => {
 
         <Button
           type="button"
-          variant="outline"
-          size="lg"
           onClick={handleCreateAccountClick}
           isDisabled={isPending}
           fullWidth

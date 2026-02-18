@@ -24,7 +24,7 @@ export const DisasterRecovery = () => {
           </Text>
         </div>
         <div className="flex gap-4 justify-center">
-          <Button variant="primary" size="md" onClick={handleRefresh}>
+          <Button variant="primary" onClick={handleRefresh}>
             {t('core.disaster.refreshButton')}
           </Button>
         </div>

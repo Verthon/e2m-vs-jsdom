@@ -1,10 +1,10 @@
 import { type ReactNode } from 'react';
 
-type ShellProps = {
+type PublicLayoutProps = {
   children: ReactNode;
 };
 
-export const Shell = ({ children }: ShellProps) => {
+export const PublicLayout = ({ children }: PublicLayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="border-b border-gray-200 py-4" />
