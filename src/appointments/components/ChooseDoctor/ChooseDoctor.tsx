@@ -8,7 +8,6 @@ interface Doctor {
   imageAlt: string;
   rating: string;
   nextAvailable: string;
-  nextAvailableIcon: string;
   bio: string;
 }
 
@@ -21,7 +20,6 @@ const DOCTORS: Doctor[] = [
     imageAlt: 'Portrait of Dr. Jane Smith in clinical setting',
     rating: '4.9 (210 reviews)',
     nextAvailable: 'Next available: Tomorrow, 10:00 AM',
-    nextAvailableIcon: 'event_available',
     bio: 'Specialist in Internal Medicine with over 12 years of experience. Focused on preventative care and patient education.',
   },
   {
@@ -32,7 +30,6 @@ const DOCTORS: Doctor[] = [
     imageAlt: 'Portrait of Dr. Michael Chen wearing a white coat',
     rating: '4.8 (120 reviews)',
     nextAvailable: 'Next available: Today, 3:30 PM',
-    nextAvailableIcon: 'schedule',
     bio: 'Board-certified Cardiologist specializing in heart health and diagnostic screenings. Known for thorough patient assessments.',
   },
   {
@@ -43,7 +40,6 @@ const DOCTORS: Doctor[] = [
     imageAlt: 'Portrait of Dr. Sarah Miller in clinical office',
     rating: '5.0 (84 reviews)',
     nextAvailable: 'Next available: Wednesday, 9:15 AM',
-    nextAvailableIcon: 'event_available',
     bio: 'Family practitioner with a focus on pediatric care and wellness checks. Highly rated for bedside manner.',
   },
 ];
@@ -70,7 +66,6 @@ export function ChooseDoctor({ onDoctorSelect }: ChooseDoctorProps) {
           imageAlt={doctor.imageAlt}
           rating={doctor.rating}
           nextAvailable={doctor.nextAvailable}
-          nextAvailableIcon={doctor.nextAvailableIcon}
           bio={doctor.bio}
           onSelect={() => onDoctorSelect?.(doctor.id)}
           onViewProfile={handleViewProfile}

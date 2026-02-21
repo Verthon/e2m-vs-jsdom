@@ -9,8 +9,9 @@ const buttonVariants = cva(
     "inline-flex items-center justify-center whitespace-nowrap",
     "rounded-[4px] font-medium",
     "transition-all duration-150 ease-in-out",
-    "select-none cursor-pointer outline-hidden",
-    "focus:outline-2 focus:outline-primary focus:outline-offset-2",
+    "select-none cursor-pointer",
+    "relative outline-none",
+    "focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:ring-offset-2",
     "aria-disabled:opacity-[0.45] aria-disabled:cursor-not-allowed",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 shrink-0",
     "group/button",
@@ -29,7 +30,7 @@ const buttonVariants = cva(
         ghost:
           "bg-transparent text-primary border-2 border-primary hover:bg-primary-ghost-bg active:scale-[0.97]",
         destructive:
-          "bg-destructive/10 hover:bg-destructive/20 text-destructive border border-transparent focus:outline-destructive dark:bg-destructive/20 dark:hover:bg-destructive/30",
+          "bg-destructive/10 hover:bg-destructive/20 text-destructive border border-transparent focus-visible:ring-destructive dark:bg-destructive/20 dark:hover:bg-destructive/30",
         link: "text-primary underline-offset-4 hover:underline border border-transparent",
       },
       size: {

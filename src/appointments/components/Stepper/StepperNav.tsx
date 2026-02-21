@@ -17,7 +17,7 @@ type StepperNavProps = {
 export const StepperNav = ({ steps, activeStep, visitedSteps, dispatch }: StepperNavProps) => (
   <nav aria-label="Progress" className="bg-white border-b border-[oklch(0.9_0.01_166)]">
     <div className="max-w-7xl mx-auto px-6">
-      <ol className="flex w-full" role="list">
+      <ol className="flex w-full gap-x-1 sm:gap-x-0">
         {steps.map((step, i) => {
           const stepNumber = i + 1;
           const isCurrent = stepNumber === activeStep;
@@ -43,7 +43,7 @@ export const StepperNav = ({ steps, activeStep, visitedSteps, dispatch }: Steppe
               : 'text-[oklch(0.75_0.01_166)]';
 
           return (
-            <li key={stepNumber} className="flex-1">
+            <li key={stepNumber} className={['flex-1 flex flex-col border-b-4 transition-colors duration-150', borderClass].join(' ')}>
               <button
                 type="button"
                 onClick={() => {
@@ -53,10 +53,9 @@ export const StepperNav = ({ steps, activeStep, visitedSteps, dispatch }: Steppe
                 aria-current={isCurrent ? 'step' : undefined}
                 aria-disabled={isLocked}
                 className={[
-                  'w-full text-left py-4 border-b-4 transition-colors duration-150',
+                  'w-full h-full text-left py-4',
                   'focus:outline-none focus-visible:bg-[oklch(0.97_0.01_166)]',
                   isLocked ? 'cursor-not-allowed' : 'cursor-pointer',
-                  borderClass,
                 ].join(' ')}
               >
                 {/* visually hidden status for screen readers */}

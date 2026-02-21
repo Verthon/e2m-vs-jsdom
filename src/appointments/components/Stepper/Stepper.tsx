@@ -85,16 +85,14 @@ export const Stepper = ({ title, children }: StepperProps) => {
 
   return (
     <StepperContext.Provider value={contextValue}>
-      <div>
-        <StepperNav
-          steps={steps}
-          activeStep={state.activeStep}
-          visitedSteps={state.visitedSteps}
-          dispatch={dispatch}
-        />
-        <div role="region" aria-live="polite" aria-atomic="false">
-          {activeStepEl}
-        </div>
+      <StepperNav
+        steps={steps}
+        activeStep={state.activeStep}
+        visitedSteps={state.visitedSteps}
+        dispatch={dispatch}
+      />
+      <div role="region" aria-live="polite" aria-atomic="false">
+        {activeStepEl}
       </div>
     </StepperContext.Provider>
   );

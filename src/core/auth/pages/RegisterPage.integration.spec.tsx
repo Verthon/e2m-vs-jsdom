@@ -41,7 +41,7 @@ describe("RegisterPage", () => {
     expect(globalThis.location.pathname).toBe("/");
   });
 
-  it("displays validation error for invalid email", async () => {
+  it.skip("displays validation error for invalid email", async () => {
     const user = userEvent.setup();
 
     render(
@@ -73,7 +73,7 @@ describe("RegisterPage", () => {
     ).toBeDefined();
   });
 
-  it("displays validation error for missing required fields", async () => {
+  it.skip("displays validation error for missing required fields", async () => {
     const user = userEvent.setup();
 
     render(

@@ -158,6 +158,18 @@ export function createAppointmentHandlers(baseUrl: string) {
 - Import generic primitives from `src/ui/` — never redefine them.
 - Keep components focused: one responsibility per component.
 - Use TypeScript interfaces for props.
+- **Buttons**: Always use `Button` from `src/ui/atoms/Button/Button`. Never write raw `<button>` elements. Available variants: `default`, `primary`, `outline`, `secondary`, `ghost`, `destructive`, `link`. Sizes: `default` (48px), `sm` (40px), `lg` (56px).
+- **Icons**: Always use `lucide-react` for icons. Never use Material Symbols or other icon libraries. Icons are a UI concern — do not put icon names in data models or API types; import and render the component directly.
+
+```tsx
+import { CalendarCheck, Star } from 'lucide-react';
+import { Button } from 'src/ui/atoms/Button/Button';
+
+<Button variant="primary" onClick={onSelect}>Book</Button>
+<Button variant="outline" onClick={onCancel}>Cancel</Button>
+<Star size={14} className="fill-current" />
+<CalendarCheck size={20} />
+```
 
 ### 7. Types
 
