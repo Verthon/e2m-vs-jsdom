@@ -9,9 +9,10 @@ import { routesConfig } from "src/routing/routesConfig";
 import { Box } from "src/ui/atoms/Box/Box";
 import { Container } from "src/ui/atoms/Container/Container";
 import { Text } from "src/ui/atoms/Text/Text";
-import { Avatar } from "src/ui/atoms/Avatar/Avatar";
+import { Avatar, AvatarImage } from "src/ui/atoms/Avatar/Avatar";
 import { Link } from "src/ui/atoms/Link/Link";
 import { Button } from "src/ui/atoms/Button/Button";
+import { Spinner } from "src/ui/atoms/Spinner/Spinner";
 
 export const Navbar = () => {
   const { authorizationStatus } = useAuth();
@@ -96,16 +97,11 @@ export const Navbar = () => {
                     {t("core.nav.myAppointments")}
                   </Text>
                 </Link>
-                <Avatar
-                  src={user.avatarUrl}
-                  alt={user.userName}
-                  fallback={user.userName}
-                  size={32}
-                />
-                <Button
-                  onClick={() => logout()}
-                  isLoading={isLoggingOut}
-                >
+                <Avatar>
+                  <AvatarImage src={user.avatarUrl} alt={user.userName} />
+                </Avatar>
+                <Button onClick={() => logout()}>
+                  {isLoggingOut && <Spinner />}
                   {t("core.nav.logout")}
                 </Button>
               </Box>
@@ -120,9 +116,7 @@ export const Navbar = () => {
                 </Text>
               </Link>
               <Link component={RouterLink} to={routesConfig.signup}>
-                <Button variant="primary">
-                  {t("core.nav.signup")}
-                </Button>
+                <Button variant="primary">{t("core.nav.signup")}</Button>
               </Link>
             </Box>
           </SignedOut>

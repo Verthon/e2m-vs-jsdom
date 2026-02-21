@@ -7,19 +7,20 @@ import { useCoreTranslation } from "src/core/i18n/useCoreTranslation";
 import { useLogin } from "../hooks/useLogin";
 import { Field } from "src/ui/organisms/Field/Field";
 import { Button } from "src/ui/atoms/Button/Button";
+import { Spinner } from "src/ui/atoms/Spinner/Spinner";
 
 const createSchema = (t: ReturnType<typeof useCoreTranslation>["t"]) =>
   z.object({
     email: z
       .email({ error: t("core.auth.login.error.emailInvalid") })
       .check(
-        z.minLength(1, { error: t("core.auth.login.error.emailRequired") })
+        z.minLength(1, { error: t("core.auth.login.error.emailRequired") }),
       ),
     password: z
       .string()
       .check(
         z.minLength(1, t("core.auth.login.error.passwordRequired")),
-        z.minLength(6, t("core.auth.login.error.passwordMinLength"))
+        z.minLength(6, t("core.auth.login.error.passwordMinLength")),
       ),
   });
 
@@ -71,17 +72,16 @@ export const LoginForm = () => {
 
       <Field.Root name="password">
         <Field.Label>{t("core.auth.login.passwordLabel")}</Field.Label>
-        <Field.Control type="password" autoComplete="current-password" required />
+        <Field.Control
+          type="password"
+          autoComplete="current-password"
+          required
+        />
         <Field.Error />
       </Field.Root>
 
       <div className="flex flex-col gap-3">
-        <Button
-          type="submit"
-          variant="primary"
-          fullWidth
-          isDisabled={isPending}
-        >
+        <Button type="submit" variant="primary" isDisabled={isPending}>
           {isPending
             ? t("core.auth.login.submitting")
             : t("core.auth.login.submitButton")}
@@ -91,17 +91,14 @@ export const LoginForm = () => {
           type="button"
           onClick={handleCreateAccountClick}
           isDisabled={isPending}
-          fullWidth
         >
           {t("core.auth.login.createAccount")}
         </Button>
       </div>
 
       <div className="text-center">
-        <Button
-          type="button"
-          isLoading={isPending}
-        >
+        <Button type="button">
+          {isPending && <Spinner />}
           {t("core.auth.login.forgotPassword")}
         </Button>
       </div>

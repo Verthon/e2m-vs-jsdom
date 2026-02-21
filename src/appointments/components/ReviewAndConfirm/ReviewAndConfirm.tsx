@@ -1,5 +1,4 @@
 import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
-import { useStepper } from '../Stepper/useStepper';
 
 const DUMMY_SPECIALTY = {
   icon: 'cardiology',
@@ -25,7 +24,6 @@ const HOLD_TIMER = '04:59';
 
 export function ReviewAndConfirm() {
   const { t } = useAppointmentsTranslation();
-  const { prev } = useStepper();
 
   return (
     <div>
@@ -132,22 +130,6 @@ export function ReviewAndConfirm() {
             <span className="font-mono font-bold">{HOLD_TIMER}</span>
           </p>
         </div>
-      </div>
-
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-6 border-t border-slate-200 dark:border-primary/20">
-        <button
-          type="button"
-          onClick={prev}
-          className="wcag-aaa-outline order-2 md:order-1 flex min-w-[140px] items-center justify-center rounded-lg h-12 px-6 border-2 border-primary text-primary font-bold text-lg hover:bg-primary/5 transition-colors"
-        >
-          {t('appointments.stepper.back')}
-        </button>
-        <button
-          type="button"
-          className="wcag-aaa-outline order-1 md:order-2 flex flex-1 md:flex-none md:min-w-[280px] items-center justify-center rounded-lg h-14 px-8 bg-primary text-white font-extrabold text-xl shadow-lg hover:bg-primary/90 transition-all active:scale-95"
-        >
-          {t('appointments.reviewAndConfirm.confirm')}
-        </button>
       </div>
 
       <p className="text-center text-slate-500 dark:text-slate-400 text-sm mt-8">

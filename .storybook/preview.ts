@@ -1,6 +1,6 @@
 import type { Preview } from 'storybook-react-rsbuild'
 
-import '../src/App.css'
+import '../src/styles/global.css'
 
 const preview: Preview = {
   parameters: {

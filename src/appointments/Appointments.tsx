@@ -1,13 +1,11 @@
-import { StepperProvider } from "./components/Stepper/StepperContext";
-import { Step } from "./components/Stepper/Step";
-import { StepperProgress } from "./components/Stepper/StepperProgress";
-import { useStepper } from "./components/Stepper/useStepper";
+import { Stepper } from "./components/Stepper/Stepper";
 import { Button } from "../ui/atoms/Button/Button";
 import { useAppointmentsTranslation } from "./i18n/useAppointmentsTranslation";
 import { ChooseSpecialty } from "./components/ChooseSpecialty/ChooseSpecialty";
 import { PickATime } from "./components/PickATime/PickATime";
 import { ChooseDoctor } from "./components/ChooseDoctor/ChooseDoctor";
 import { ReviewAndConfirm } from "./components/ReviewAndConfirm/ReviewAndConfirm";
+import { Step } from "./components/Stepper/Step";
 
 /* BookingHeader — extract once header is shared across multiple booking steps */
 function BookingHeader() {
@@ -73,83 +71,118 @@ function QuickGuide() {
   );
 }
 
-/* BookingFooter — extract once footer is shared across multiple booking steps */
-function BookingFooter() {
-  const { isFirst, isLast, prev, next } = useStepper();
-  const { t } = useAppointmentsTranslation();
-
-  return (
-    <footer className="border-t border-slate-200 bg-white px-6 py-4">
-      <div className="mx-auto max-w-4xl">
-        <div className="mt-4 flex justify-between">
-          <Button variant="outlined" onClick={prev} isDisabled={isFirst}>
-            {t("appointments.stepper.back")}
-          </Button>
-          <Button variant="primary" onClick={next} isDisabled={isLast}>
-            {t("appointments.stepper.next")}
-          </Button>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 const Appointments = () => {
   const { t } = useAppointmentsTranslation();
 
   return (
-      <StepperProvider
-        initialKey="choose-specialty"
-        allKeys={[
-          "choose-specialty",
-          "choose-doctor",
-          "pick-a-time",
-          "review-and-confirm",
-        ]}
-      >
-        <div className="flex min-h-screen flex-col bg-slate-50">
-          <BookingHeader />
+    <div className="flex min-h-screen flex-col bg-slate-50">
+      <BookingHeader />
 
-          <main className="flex-1 px-6 py-8">
-            <div className="mx-auto max-w-4xl space-y-6">
-              <StepperProgress />
+      <main className="flex-1 px-6 py-8">
+        <div className="mx-auto max-w-4xl space-y-6">
+          <Stepper title={t("appointments.header.title")}>
+            <Step label={t("appointments.steps.chooseSpecialty")}>
+              {({ dispatch, isFirst, isLast }) => (
+                <>
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-[7fr_5fr]">
+                    <ChooseSpecialty />
+                    <QuickGuide />
+                  </div>
+                  <div className="mt-6 flex justify-between">
+                    <Button
+                      variant="outline"
+                      onClick={() => dispatch({ type: "prev" })}
+                      isDisabled={isFirst}
+                    >
+                      {t("appointments.stepper.back")}
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => dispatch({ type: "next" })}
+                      isDisabled={isLast}
+                    >
+                      {t("appointments.stepper.next")}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Step>
 
-              <Step
-                stepKey="choose-specialty"
-                label={t("appointments.steps.chooseSpecialty")}
-              >
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[7fr_5fr]">
-                  <ChooseSpecialty />
-                  <QuickGuide />
-                </div>
-              </Step>
+            <Step label={t("appointments.steps.chooseDoctor")}>
+              {({ dispatch, isFirst, isLast }) => (
+                <>
+                  <ChooseDoctor />
+                  <div className="mt-6 flex justify-between">
+                    <Button
+                      variant="outline"
+                      onClick={() => dispatch({ type: "prev" })}
+                      isDisabled={isFirst}
+                    >
+                      {t("appointments.stepper.back")}
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => dispatch({ type: "next" })}
+                      isDisabled={isLast}
+                    >
+                      {t("appointments.stepper.next")}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Step>
 
-              <Step
-                stepKey="choose-doctor"
-                label={t("appointments.steps.chooseDoctor")}
-              >
-                <ChooseDoctor />
-              </Step>
+            <Step label={t("appointments.steps.pickATime")}>
+              {({ dispatch, isFirst, isLast }) => (
+                <>
+                  <PickATime />
+                  <div className="mt-6 flex justify-between">
+                    <Button
+                      variant="outline"
+                      onClick={() => dispatch({ type: "prev" })}
+                      isDisabled={isFirst}
+                    >
+                      {t("appointments.stepper.back")}
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => dispatch({ type: "next" })}
+                      isDisabled={isLast}
+                    >
+                      {t("appointments.stepper.next")}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Step>
 
-              <Step
-                stepKey="pick-a-time"
-                label={t("appointments.steps.pickATime")}
-              >
-                <PickATime />
-              </Step>
-
-              <Step
-                stepKey="review-and-confirm"
-                label={t("appointments.steps.reviewAndConfirm")}
-              >
-                <ReviewAndConfirm />
-              </Step>
-            </div>
-          </main>
-
-          <BookingFooter />
+            <Step label={t("appointments.steps.reviewAndConfirm")}>
+              {({ dispatch, isFirst, isLast }) => (
+                <>
+                  <ReviewAndConfirm />
+                  <div className="mt-6 flex justify-between">
+                    <Button
+                      variant="outline"
+                      onClick={() => dispatch({ type: "prev" })}
+                      isDisabled={isFirst}
+                    >
+                      {t("appointments.stepper.back")}
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => dispatch({ type: "next" })}
+                      isDisabled={isLast}
+                    >
+                      {t("appointments.stepper.next")}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Step>
+          </Stepper>
         </div>
-      </StepperProvider>
+      </main>
+    </div>
   );
 };
 

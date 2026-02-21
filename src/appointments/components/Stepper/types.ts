@@ -1,36 +1,66 @@
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
-export type StepState = {
-  completed: boolean;
-  valid: boolean;
-  visited: boolean;
+// ---------------------------------------------------------------------------
+// Actions
+// ---------------------------------------------------------------------------
+
+/** @public */
+export type StepperAction =
+  | { type: 'next' }
+  | { type: 'prev' }
+  | { type: 'goto'; step: number }; // 1-based, visited steps only
+
+// ---------------------------------------------------------------------------
+// Render props
+// ---------------------------------------------------------------------------
+
+/**
+ * Read-only state and dispatch injected into each step's render function.
+ * @public
+ */
+export type StepRenderProps = {
+  dispatch: (action: StepperAction) => void;
+  /** 1-based index of the active step. */
+  currentStep: number;
+  totalSteps: number;
+  isFirst: boolean;
+  isLast: boolean;
 };
 
-export type StepMeta = {
-  key: string;
-  label: ReactNode | null;
-  description: ReactNode | null;
-  optional: boolean;
-  onBeforeLeave: (() => boolean | Promise<boolean>) | null;
+// ---------------------------------------------------------------------------
+// Component props
+// ---------------------------------------------------------------------------
+
+/**
+ * Props for a single wizard step.
+ * @public
+ */
+export type StepProps = {
+  label: string;
+  description?: string;
+  children: (props: StepRenderProps) => ReactNode;
 };
+
+/**
+ * Props for the root Stepper component.
+ * @public
+ */
+export type StepperProps = {
+  /** Used in `document.title` as "Step X of Y: {stepLabel} – {title}". */
+  title: string;
+  children: ReactElement<StepProps> | ReactElement<StepProps>[];
+};
+
+// ---------------------------------------------------------------------------
+// Internal
+// ---------------------------------------------------------------------------
 
 export type StepperState = {
-  activeKey: string;
-  previousKey: string | null;
-  steps: Map<string, StepState>;
+  activeStep: number; // 1-based
+  visitedSteps: Set<number>;
 };
 
-export type StepperAction =
-  | { type: 'NEXT'; orderedKeys: string[] }
-  | { type: 'PREV'; orderedKeys: string[] }
-  | { type: 'GO_TO'; key: string }
-  | { type: 'COMPLETE_STEP'; key: string }
-  | { type: 'SKIP_STEP'; orderedKeys: string[] }
-  | { type: 'SET_VALIDITY'; key: string; valid: boolean }
-  | { type: 'RESET'; initialKey: string };
-
-export type DeriveDirection = (
-  orderedKeys: string[],
-  activeKey: string,
-  previousKey: string | null
-) => 'forward' | 'backward' | null;
+export type StepperInternalAction =
+  | { type: 'next'; totalSteps: number }
+  | { type: 'prev' }
+  | { type: 'goto'; step: number; visitedSteps: Set<number> };

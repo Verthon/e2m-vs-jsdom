@@ -1,29 +1,33 @@
-import type { ReactNode } from 'react';
 import { useStepperContext } from './StepperContext';
+import type { StepProps } from './types';
 
-interface StepProps {
-  readonly stepKey: string;
-  readonly label: string;
-  readonly optional?: boolean;
-  readonly children: ReactNode;
-}
-
-export function Step({ stepKey, label, optional, children }: StepProps) {
-  const { activeKey, orderedKeys } = useStepperContext();
-  const isActive = stepKey === activeKey;
-  const stepIndex = orderedKeys.indexOf(stepKey);
-  const totalSteps = orderedKeys.length;
-
-  const legendText = `${label} (Step ${stepIndex + 1} of ${totalSteps})${optional ? ' - Optional' : ''}`;
+/**
+ * A single step in a multi-step wizard.
+ * Renders children as a render prop, injecting navigation state and dispatch.
+ *
+ * @public
+ *
+ * @example
+ * <Step label="Personal Info" description="Your basic details">
+ *   {({ dispatch, isFirst, isLast }) => (
+ *     <>
+ *       <fieldset>...</fieldset>
+ *       <div>
+ *         {!isFirst && <button onClick={() => dispatch({ type: 'prev' })}>Back</button>}
+ *         <button onClick={() => dispatch({ type: 'next' })}>
+ *           {isLast ? 'Finish' : 'Next'}
+ *         </button>
+ *       </div>
+ *     </>
+ *   )}
+ * </Step>
+ */
+export const Step = ({ label, children }: StepProps) => {
+  const ctx = useStepperContext();
 
   return (
-    <fieldset
-      className="m-0 min-w-0 border-none p-0"
-      style={isActive ? undefined : { display: 'none' }}
-      {...(isActive ? { 'aria-current': 'step' as const } : {})}
-    >
-      <legend className="sr-only">{legendText}</legend>
-      {children}
-    </fieldset>
+    <section aria-label={label}>
+      {children(ctx)}
+    </section>
   );
-}
+};

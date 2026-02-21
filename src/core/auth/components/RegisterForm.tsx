@@ -115,7 +115,6 @@ export const RegisterForm = () => {
         <Button
           type="submit"
           variant="primary"
-          fullWidth
           isDisabled={isPending}
         >
           {isPending
