@@ -1,14 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { userQueries } from './queries/authQueries';
-import { type User } from './types';
 
-interface UseUserReturn {
-  isError: boolean;
-  isPending: boolean;
-  data?: User;
-}
-
-export const useUser = (): UseUserReturn => {
+export const useUser = () => {
   const { data, isPending, isError } = useQuery(userQueries.current());
 
   return {

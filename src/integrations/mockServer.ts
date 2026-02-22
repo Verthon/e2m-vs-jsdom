@@ -1,11 +1,14 @@
 import { isCommonAssetRequest } from "msw";
 import { setupWorker } from "msw/browser";
+import { createAppointmentHandlers } from "src/appointments/mocks/appointmentHandlers";
 import { createAuthHandlers } from "src/core/auth/mocks/authHandlers";
 
 const authApiBase = import.meta.env.PUBLIC_AUTH_API;
+const appointmentsApiBase = import.meta.env.PUBLIC_APPOINTMENTS_API;
 
 const handlers = [
   ...createAuthHandlers(authApiBase),
+  ...createAppointmentHandlers(appointmentsApiBase),
 ];
 
 export const worker = setupWorker(...handlers);

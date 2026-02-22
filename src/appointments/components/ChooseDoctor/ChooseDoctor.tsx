@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { RadioGroup } from '@base-ui/react/radio-group';
 import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
 import { DoctorCard } from './DoctorCard';
 
@@ -50,27 +52,39 @@ interface ChooseDoctorProps {
 
 export function ChooseDoctor({ onDoctorSelect }: ChooseDoctorProps) {
   const { t } = useAppointmentsTranslation();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const handleViewProfile = () => {};
+  const handleSelect = (doctorId: string) => {
+    setSelectedId(doctorId);
+    onDoctorSelect?.(doctorId);
+  };
 
   return (
-    <section aria-label={t('appointments.chooseDoctor.section')} className="flex flex-col gap-6">
+    <section aria-label={t('appointments.chooseDoctor.section')} className="flex flex-col">
       <h2 className="text-slate-900 dark:text-white text-xl font-bold">
         {t('appointments.chooseDoctor.section')}
       </h2>
-      {DOCTORS.map((doctor) => (
-        <DoctorCard
-          key={doctor.id}
-          name={doctor.name}
-          imageUrl={doctor.imageUrl}
-          imageAlt={doctor.imageAlt}
-          rating={doctor.rating}
-          nextAvailable={doctor.nextAvailable}
-          bio={doctor.bio}
-          onSelect={() => onDoctorSelect?.(doctor.id)}
-          onViewProfile={handleViewProfile}
-        />
-      ))}
+      <RadioGroup
+        value={selectedId ?? ''}
+        onValueChange={handleSelect}
+        aria-label={t('appointments.chooseDoctor.section')}
+        className="flex flex-col gap-6"
+      >
+        {DOCTORS.map((doctor) => (
+          <DoctorCard
+            key={doctor.id}
+            value={doctor.id}
+            name={doctor.name}
+            imageUrl={doctor.imageUrl}
+            imageAlt={doctor.imageAlt}
+            rating={doctor.rating}
+            nextAvailable={doctor.nextAvailable}
+            bio={doctor.bio}
+            isSelected={selectedId === doctor.id}
+            onSelect={() => handleSelect(doctor.id)}
+          />
+        ))}
+      </RadioGroup>
     </section>
   );
 }
