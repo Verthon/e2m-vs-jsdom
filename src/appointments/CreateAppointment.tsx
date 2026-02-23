@@ -2,6 +2,7 @@ import { Stepper } from "./components/Stepper/Stepper";
 import { Button } from "../ui/atoms/Button/Button";
 import { useAppointmentsTranslation } from "./i18n/useAppointmentsTranslation";
 import { ChooseSpecialty } from "./components/ChooseSpecialty/ChooseSpecialty";
+import { useCreateAppointmentState } from "./hooks/useCreateAppointmentState";
 import { PickATime } from "./components/PickATime/PickATime";
 import { ChooseDoctor } from "./components/ChooseDoctor/ChooseDoctor";
 import { ReviewAndConfirm } from "./components/ReviewAndConfirm/ReviewAndConfirm";
@@ -73,6 +74,11 @@ function QuickGuide() {
 
 const Appointments = () => {
   const { t } = useAppointmentsTranslation();
+  const {
+    draft,
+    dispatch: appointmentDispatch,
+    stepCanProceed,
+  } = useCreateAppointmentState();
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
@@ -82,10 +88,20 @@ const Appointments = () => {
         <div className="mx-auto max-w-4xl space-y-6">
           <Stepper title={t("appointments.header.title")}>
             <Step label={t("appointments.steps.chooseSpecialty")}>
-              {({ dispatch, isFirst, isLast }) => (
+              {({ dispatch, isFirst }) => (
                 <>
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-[7fr_5fr]">
-                    <ChooseSpecialty />
+                    <ChooseSpecialty
+                      selectedSpecialtyId={draft.specialty?.id ?? null}
+                      onSelect={(id, name, description) =>
+                        appointmentDispatch({
+                          type: "SELECT_SPECIALTY",
+                          id,
+                          name,
+                          description,
+                        })
+                      }
+                    />
                     <QuickGuide />
                   </div>
                   <div className="mt-6 flex justify-between">
@@ -99,7 +115,7 @@ const Appointments = () => {
                     <Button
                       variant="primary"
                       onClick={() => dispatch({ type: "next" })}
-                      isDisabled={isLast}
+                      isDisabled={!stepCanProceed[1](draft)}
                     >
                       {t("appointments.stepper.next")}
                     </Button>
@@ -109,9 +125,15 @@ const Appointments = () => {
             </Step>
 
             <Step label={t("appointments.steps.chooseDoctor")}>
-              {({ dispatch, isFirst, isLast }) => (
+              {({ dispatch, isFirst }) => (
                 <>
-                  <ChooseDoctor />
+                  <ChooseDoctor
+                    specialtyId={draft.specialty?.id ?? null}
+                    selectedDoctorId={draft.doctor?.id ?? null}
+                    onSelect={(id, name, photoUrl) =>
+                      appointmentDispatch({ type: "SELECT_DOCTOR", id, name, photoUrl })
+                    }
+                  />
                   <div className="mt-6 flex justify-between">
                     <Button
                       variant="outline"
@@ -123,7 +145,7 @@ const Appointments = () => {
                     <Button
                       variant="primary"
                       onClick={() => dispatch({ type: "next" })}
-                      isDisabled={isLast}
+                      isDisabled={!stepCanProceed[2](draft)}
                     >
                       {t("appointments.stepper.next")}
                     </Button>

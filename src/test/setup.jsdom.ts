@@ -1,4 +1,5 @@
 import { beforeAll, afterEach, afterAll } from "vitest";
+import "@testing-library/jest-dom/vitest";
 import { setupServer } from "msw/node";
 import { createAuthHandlers } from "src/core/auth/mocks/authHandlers";
 import { setViewport, resetViewport } from "./viewport";

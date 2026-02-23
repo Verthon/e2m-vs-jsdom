@@ -1,12 +1,20 @@
 import { queryOptions } from '@tanstack/react-query';
-import { fetchSpecialties } from '../services/appointmentsService';
+import { fetchSpecialties, fetchDoctorsBySpecialty } from '../services/appointmentsService';
 
 export const appointmentsQueries = {
-  all: () => ['auth'] as const,
+  all: () => ['appointments'] as const,
   specialties: () =>
     queryOptions({
       queryKey: [...appointmentsQueries.all(), 'specialties'] as const,
       queryFn: fetchSpecialties,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+      retry: false,
+    }),
+  doctorsBySpecialty: (specialtyId: string) =>
+    queryOptions({
+      queryKey: [...appointmentsQueries.all(), 'doctors', specialtyId] as const,
+      queryFn: () => fetchDoctorsBySpecialty(specialtyId),
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
       retry: false,

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { AlertCircle } from "lucide-react";
 import { Button } from "src/ui/atoms/Button/Button";
 import { Skeleton } from "src/ui/atoms/Skeleton/Skeleton";
@@ -37,18 +36,13 @@ function SpecialtiesError({ onRetry }: SpecialtiesErrorProps) {
 }
 
 interface ChooseSpecialtyProps {
-  readonly onSpecialtyChange?: (specialty: string | null) => void;
+  readonly selectedSpecialtyId: string | null;
+  readonly onSelect: (id: string, name: string, description: string) => void;
 }
 
-export function ChooseSpecialty({ onSpecialtyChange }: ChooseSpecialtyProps) {
+export function ChooseSpecialty({ selectedSpecialtyId, onSelect }: ChooseSpecialtyProps) {
   const { t } = useAppointmentsTranslation();
   const { data, isPending, isError, refetch } = useGetSpecialties();
-  const [selected, setSelected] = useState<string | null>(null);
-
-  const handleChange = (value: string) => {
-    setSelected(value);
-    onSpecialtyChange?.(value);
-  };
 
   const activeSpecialties = data?.filter((s) => s.isActive) ?? [];
 
@@ -80,7 +74,7 @@ export function ChooseSpecialty({ onSpecialtyChange }: ChooseSpecialtyProps) {
 
         {data &&
           activeSpecialties.map((specialty) => {
-            const isSelected = selected === specialty.id;
+            const isSelected = selectedSpecialtyId === specialty.id;
 
             return (
               <label
@@ -97,7 +91,7 @@ export function ChooseSpecialty({ onSpecialtyChange }: ChooseSpecialtyProps) {
                   type="radio"
                   value={specialty.id}
                   checked={isSelected}
-                  onChange={() => handleChange(specialty.id)}
+                  onChange={() => onSelect(specialty.id, specialty.name.en, specialty.description.en)}
                   className="sr-only"
                 />
 

@@ -1,4 +1,5 @@
 import type { SpecialtiesResponse } from "../responses/Specialties";
+import type { DoctorsBySpecialtyResponse } from "../responses/DoctorsBySpecialty";
 
 export const specialtiesResponseMock = [
   {
@@ -32,3 +33,90 @@ export const specialtiesResponseMock = [
     description: { en: "Specialized care for skin conditions, hair, and nail health" },
   },
 ] satisfies SpecialtiesResponse;
+
+const generalPractitionerDoctorsMock: DoctorsBySpecialtyResponse = [
+  {
+    id: 'jane-smith',
+    name: 'Dr. Jane Smith',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8q44jdosWjivrD01o7afpb6R-tYM_lencDvPwO-ejfiBySaDooqYvrCX8jM8WKzTbn_aQvmsdjdamSqUUqFWEzQbtslvBrOGl1KP3bvkJEJHSiAXMJ8J8NpUEX6qoqqYAjfq1mfzC6g36gd03D_1jN86D1hbYkLzFUweXEvBZqT-6GjTSswksj1JQHPzjr3s4Abtyap6Qi3jE_d0XrwUvKJkNhDS9AcTfeUiKqX-O9q2x-bKBdA-GTMnF_VkRq9Pz39VDQYnt2Os',
+    rating: { rate: 4.9, amountOfReviews: 210 },
+    nextAvailable: 'Tomorrow, 10:00 AM',
+    bio: { en: 'Specialist in Internal Medicine with over 12 years of experience. Focused on preventative care and patient education.' },
+  },
+  {
+    id: 'michael-chen',
+    name: 'Dr. Michael Chen',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDBlvwcq1X2shTsNb0TmlI8hLWiXUbKOvBgwz_X-eyy3KFFumAt9vaGlQlhAMVkL8RmW6xBKiUihh9Lfr7YvJRCet4Ec6vVSa-Nf2qX8lwYxXbGL4UaKhWNLX2c7v43XijtyVTXN4A4oFnfguZrn-x6zlwq2Bj5WNxTQ8o6w3OUx65KKzA2NIjFl4WUkTkVjOMzgvupz9Tzp6KAfsOE7ylkB1T8pm0gSTVyMrfvYgLT91fCAv3x-ip6C6yecMIsX_vNd5g41iA-1bE',
+    rating: { rate: 4.8, amountOfReviews: 120 },
+    nextAvailable: 'Today, 3:30 PM',
+    bio: { en: 'Board-certified Cardiologist specializing in heart health and diagnostic screenings. Known for thorough patient assessments.' },
+  },
+  {
+    id: 'sarah-miller',
+    name: 'Dr. Sarah Miller',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuArUK62LjatE-vpMj7_fmLwQQyiPNbVZv-xSFvlGkyRfxtVFYlFMRdGcRKsyJObIi9c_kJn-60VQXCQTBVEp_UfdMgOOHjNGhUDTx2HU18OYMhCFfdnw5lTaS5NHO9Eveu3FOA1MfjbU7GiiT0GH5CEF5YANptEPHWAugGOEC-IxlyQyb8Ymdux1iLIhuT38fvrjuwCe0u49SMcJRBGuFTknuSk71jPI9saxlv-KCNrhIABFwdLoRUKNtbvlsEwS5PW6tAaXIDuqAI',
+    rating: { rate: 5, amountOfReviews: 84 },
+    nextAvailable: 'Wednesday, 9:15 AM',
+    bio: { en: 'Family practitioner with a focus on pediatric care and wellness checks. Highly rated for bedside manner.' },
+  },
+];
+
+const psychiatryDoctorsMock: DoctorsBySpecialtyResponse = [
+  {
+    id: 'sarah-jenkins',
+    name: 'Dr. Sarah Jenkins',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABoeEErFDLHRHCyv5HOQdHqqx6MAjMSH7nIbKAYTnDdWW5Kx_s8yhIds3hz-C4Ju26-FtcWT1yZWktTnYOpR85ssmoFnywXaiO4WoHtw1k45Mp5aa1IR32ArZO0vjUxoOGobz3t45z9kQHX3pQe5NMy2N6sw1A2aH3XwbQsg0YEe5yjC0FjAnzdMdtdtlvq_I729ynnxE5Tm0A_7WmyTBFNc3UJ63Wj-e4k3z55oK_H24NFWFI_1KxmyLL6FX2sukQ0Pk5ZlLEfmY',
+    rating: { rate: 4.8, amountOfReviews: 312 },
+    nextAvailable: 'Today, 5:00 PM',
+    bio: { en: 'Mental health advocate specializing in cognitive behavioral therapy and anxiety management. Helping patients find balance through personalized therapeutic approaches.' },
+  },
+  {
+    id: 'david-thorne',
+    name: 'Dr. David Thorne',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDXBJK9Co8tAf5i7DfKLzv2b8-tSXm_yHtaOmoQ1MP5PAmdsu2m-9_UowG_tlA_7b1zwF4n9veR4KKBncCk7YNmJMMi0w7Y4e7no_BXnVLslDu46VniEe1MWgW4as6ofBGviZyYwBBkPsmNT-MvlclbHsdnxs-3SUkJYNn-th0e7rbIf_NTvwXCnB9x7w9KbxcC1pSIMnmNdINS5kJJ28mJt8fH1tFsP9D7d-eVyWNbb4BuOOX7b8enu8zDqbxFP_TpViG-wb4bunU',
+    rating: { rate: 4.7, amountOfReviews: 589 },
+    nextAvailable: 'Thursday, 11:00 AM',
+    bio: { en: 'Specialist in sports medicine and reconstructive surgery. Dr. Thorne has worked with elite athletes to provide cutting-edge recovery and surgical solutions.' },
+  },
+  {
+    id: 'james-wilson',
+    name: 'Dr. James Wilson',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuALeUfhjMZxJIt9Ou2nY99wwZTMmtJ1opX6BVVanLBJM5qQa6rA3JynTM_16QMtCBDy8wLmqm4EVoLY7_ENzPHS-syvV4CN6rtv9vmPeTpIwNHolu4U7Q_glVnjfMfV6fsR3ZXdyf7JQyJRK3-McepFNYcWDWslbYeY2t0xXYQZZlPsWf_NMFKoWQXNdPg8kPbReVJqOVRvpD2IO2rMSDoHiKcFvAO_nPHwtpMlKTh1kfUpuNDKnJpH9rhqH5Zk7DrKeCpKYBRDW4I',
+    rating: { rate: 5, amountOfReviews: 1400 },
+    nextAvailable: 'Friday, 2:00 PM',
+    bio: { en: 'Focusing on neuro-rehabilitation and chronic headache management. Dr. Wilson combines traditional techniques with modern neurological diagnostics.' },
+  },
+];
+
+const dermatologistDoctorsMock: DoctorsBySpecialtyResponse = [
+  {
+    id: 'amara-okafor',
+    name: 'Dr. Amara Okafor',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA853MaxB7k61Z7g3VuRtdMh1lJ717Me3Uatz13vMJpCpxzqKHZDySm5mI_7z8ak-6hpevF_dinV8n5KOmGJMWfOLWuMki0iSPTX7SB891LHKKKM-ch0K9xoJqM1WczEQJrQSzFdHhDtMtmVsnyX2FhstaWg1gNTe2dBrujuc4vyJW65w6CRw_LoVYGWJyq1CLD7FYGYYZcyrLda6XOQwX_55yo3lhMD6zQU180b0zPac2RYoYqtoouhel8P_JMpDEfdO7ZL0Os3HM',
+    rating: { rate: 4.9, amountOfReviews: 821 },
+    nextAvailable: 'Tomorrow, 8:30 AM',
+    bio: { en: 'Expert in cosmetic and medical dermatology. Dedicated to treating complex skin conditions and providing personalized skincare regimens for healthy, glowing skin.' },
+  },
+  {
+    id: 'sofia-martinez',
+    name: 'Dr. Sofia Martinez',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBs_UYD5wh0AUoWMmY4b6R1nFk1yDXK4I2KEk4ykXBVR9U_VHorRQeKk1fFt1FFg8YVy_3H_apHyLKXelErJmzYthq-378BC6QkPOusDELf6BfbyAbstpDOMiZTBK7WOhkSrJsjBQhXCI7ECE_lujuEOKuE4bJBBPcOiOc2I7CPpVSMQMkq26m-xzcdDCYMc2sE2mSRPHWQ9SIZiYM3UYIzm3WBsQbpXs3001TWZpE14dlhDP2qoaNzNahqSvlWyIbWoWbkAhGOXo8',
+    rating: { rate: 4.9, amountOfReviews: 742 },
+    nextAvailable: 'Wednesday, 1:00 PM',
+    bio: { en: 'Providing holistic women\'s healthcare from prenatal support to reproductive wellness. Dr. Martinez is known for her empathetic and thorough clinical approach.' },
+  },
+  {
+    id: 'lisa-henderson',
+    name: 'Dr. Lisa Henderson',
+    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDmbw_aLes6GuaInlamv7YnX1bwfJU8LY4m_aaEPWOjWORILxMJTYmCIdMQxbLgiSfM9v-dONp79D1TP_zEjQIp3CabF2vgJIiquJuWZLy8L8TsgTfuS0pKHfOmi9oVhaV89aAquSV09gXhxMu3Aa4skazN8yHMY1T_Fdy826sg1nzP-HuqQUpMpSc1wMQ6HsxjlcHF9eG0HqOCNhM--rQm3pxA2qZNItrxvTr4BaIovg5IycXKbswTlFArSbGFodBBzEw-TwdvG8g',
+    rating: { rate: 4.8, amountOfReviews: 392 },
+    nextAvailable: 'Monday, 10:45 AM',
+    bio: { en: 'Specializing in metabolic disorders and hormonal health. Dr. Henderson works closely with patients to manage diabetes and thyroid health through data-driven care.' },
+  },
+];
+
+export const doctorsBySpecialtyMock: Record<string, DoctorsBySpecialtyResponse> = {
+  "1": generalPractitionerDoctorsMock,
+  "2": psychiatryDoctorsMock,
+  "3": dermatologistDoctorsMock,
+};

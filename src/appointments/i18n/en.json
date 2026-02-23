@@ -37,6 +37,8 @@
   "appointments.chooseDoctor.stepLabel": "Step 3 of 4",
   "appointments.chooseDoctor.description": "Select a healthcare provider to continue your booking.",
   "appointments.chooseDoctor.section": "Recommended Doctors",
+  "appointments.chooseDoctor.error.message": "Failed to load doctors. Please try again.",
+  "appointments.chooseDoctor.error.retry": "Try again",
   "appointments.chooseDoctor.selectLabel": "Select",
   "appointments.chooseDoctor.viewProfile": "View Profile",
   "appointments.steps.reviewAndConfirm": "Review & Confirm",

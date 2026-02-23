@@ -6,12 +6,15 @@
   "scripts": {
     "build": "rsbuild build",
     "dev": "rsbuild dev --open",
+    "dev:e2m": "PUBLIC_MOCK=true rsbuild dev",
     "preview": "rsbuild preview",
     "type-check": "tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "test:unit": "vitest",
+    "test:e2m": "playwright test",
+    "test.e2m:ui": "playwright test --headed",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
