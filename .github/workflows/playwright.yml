@@ -8,6 +8,10 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_MOCK: 'true'
+      PUBLIC_AUTH_API: https://flatline.com/auth/api
+      PUBLIC_APPOINTMENTS_API: https://flatline.com/appointments/api
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
