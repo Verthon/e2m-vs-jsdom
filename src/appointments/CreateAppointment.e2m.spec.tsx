@@ -24,6 +24,20 @@ test.describe('patient appointment booking process', () => {
     await doctorsGroup.locator('label').first().click();
 
     await page.getByRole('button', { name: 'Next' }).click();
+
+    await expect(
+      page.getByRole('heading', { name: 'Pick a Time', level: 2 }),
+    ).toBeVisible();
+
+    const today = new Date();
+    const todayDay = today.getDate().toString();
+    await page.getByRole('gridcell', { name: new RegExp(`${todayDay}th|${todayDay}st|${todayDay}nd|${todayDay}rd`) }).click();
+
+    const timeSlotButton = page.getByRole('button', { name: /^\d{2}:\d{2}$/ }).first();
+    await timeSlotButton.click();
+
+    await expect(timeSlotButton).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'Next', exact: true })).not.toHaveAttribute('aria-disabled');
   });
 
   test('should not persist the chosen doctor when user go back and change the specialty', async ({

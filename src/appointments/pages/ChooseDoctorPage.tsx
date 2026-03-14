@@ -1,8 +1,13 @@
+import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { useAppointmentsTranslation } from '../i18n/useAppointmentsTranslation';
 import { ChooseDoctor } from '../components/ChooseDoctor/ChooseDoctor';
 
 export default function ChooseDoctorPage() {
   const { t } = useAppointmentsTranslation();
+  const [searchParams] = useSearchParams();
+  const specialtyId = searchParams.get('specialtyId');
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -30,7 +35,7 @@ export default function ChooseDoctorPage() {
             {t('appointments.chooseDoctor.description')}
           </p>
         </div>
-        <ChooseDoctor />
+        <ChooseDoctor specialtyId={specialtyId} selectedDoctorId={selectedDoctorId} onSelect={(id) => setSelectedDoctorId(id)} />
       </main>
     </div>
   );

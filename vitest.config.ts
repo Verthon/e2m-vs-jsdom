@@ -20,6 +20,7 @@ export default defineConfig({
       {
         plugins: [createPathsPlugin()],
         test: {
+          restoreMocks: true,
           include: ["**/*.unit.spec.ts"],
           name: "unit",
           environment: "node",
@@ -29,6 +30,7 @@ export default defineConfig({
         plugins: [createPathsPlugin()],
         envPrefix: ["VITE_", "PUBLIC_"],
         test: {
+          restoreMocks: true,
           include: ["**/*.integration.spec.tsx"],
           name: "jsdom",
           environment: "jsdom",

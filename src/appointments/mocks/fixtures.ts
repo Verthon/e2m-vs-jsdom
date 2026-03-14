@@ -1,5 +1,61 @@
 import type { SpecialtiesResponse } from "../responses/Specialties";
 import type { DoctorsBySpecialtyResponse } from "../responses/DoctorsBySpecialty";
+import type { TimeslotsResponse } from "../responses/Timeslots";
+import type { TermsOfServiceResponse, CancellationPolicyResponse } from "../types";
+
+export const termsOfServiceMock: TermsOfServiceResponse = {
+  introduction:
+    'By booking an appointment through Flatline Medical, you agree to the following terms and conditions governing the use of our scheduling platform.',
+  sections: [
+    {
+      title: 'Appointment Confirmation',
+      description:
+        'All appointments are subject to availability and confirmation by the healthcare provider. A booking request does not guarantee a confirmed slot until you receive a confirmation notification.',
+    },
+    {
+      title: 'Patient Responsibility',
+      description:
+        'You are responsible for providing accurate personal and medical information. Providing false or misleading information may result in cancellation of your appointment.',
+    },
+    {
+      title: 'No-Show Policy',
+      description:
+        'Patients who fail to attend a confirmed appointment without prior cancellation may be subject to a no-show fee of up to €25, at the discretion of the healthcare provider.',
+    },
+    {
+      title: 'Data Privacy',
+      description:
+        'Your personal and health data is processed in accordance with GDPR and applicable local regulations. We do not share your data with third parties without your explicit consent.',
+    },
+  ],
+};
+
+export const cancellationPolicyMock: CancellationPolicyResponse = {
+  introduction:
+    'We understand that plans change. To ensure fair access to appointments for all patients, please review our cancellation guidelines below.',
+  sections: [
+    {
+      title: 'Free Cancellation',
+      description:
+        'You may cancel or reschedule your appointment free of charge up to 24 hours before the scheduled time.',
+    },
+    {
+      title: 'Late Cancellation',
+      description:
+        'Cancellations made less than 24 hours before the appointment may incur a fee of up to €15, depending on the healthcare provider\'s policy.',
+    },
+    {
+      title: 'Repeated Cancellations',
+      description:
+        'Patients who cancel more than 3 appointments within a 30-day period may have their booking privileges temporarily restricted.',
+    },
+    {
+      title: 'Emergency Exceptions',
+      description:
+        'In cases of medical emergency or extraordinary circumstances, cancellation fees may be waived at the provider\'s discretion. Please contact support with relevant documentation.',
+    },
+  ],
+};
 
 export const specialtiesResponseMock = [
   {
@@ -120,3 +176,37 @@ export const doctorsBySpecialtyMock: Record<string, DoctorsBySpecialtyResponse> 
   "2": psychiatryDoctorsMock,
   "3": dermatologistDoctorsMock,
 };
+
+const defaultTimeslots: TimeslotsResponse['slots'] = [
+  { time: '08:00', available: true },
+  { time: '08:30', available: true },
+  { time: '09:00', available: true },
+  { time: '10:15', available: true },
+  { time: '11:00', available: true },
+  { time: '13:30', available: true },
+  { time: '14:00', available: true },
+  { time: '15:15', available: true },
+  { time: '16:45', available: true },
+  { time: '18:00', available: true },
+  { time: '19:30', available: true },
+];
+
+const emptyTimeslots: TimeslotsResponse = { date: '2026-04-25', slots: [] };
+
+export const TIMESLOTS_ERROR_DATE = '2026-04-30';
+export const TIMESLOTS_EMPTY_DATE = '2026-04-25';
+
+const allDoctorIds = [
+  'jane-smith', 'michael-chen', 'sarah-miller',
+  'sarah-jenkins', 'david-thorne', 'james-wilson',
+  'amara-okafor', 'sofia-martinez', 'lisa-henderson',
+];
+
+export const timeslotsByDate: Record<string, TimeslotsResponse | null> = {
+  [TIMESLOTS_EMPTY_DATE]: emptyTimeslots,
+  [TIMESLOTS_ERROR_DATE]: null,
+};
+
+export const timeslotsMock: Record<string, TimeslotsResponse> = Object.fromEntries(
+  allDoctorIds.map((id) => [id, { date: '2026-03-12', slots: defaultTimeslots }])
+);

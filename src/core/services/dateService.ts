@@ -27,11 +27,14 @@ export const createDateService = () => {
     return toDisplayFormat(timestamp);
   };
 
+  const toDateString = (date: Date) => date.toISOString().split('T')[0];
+
   const parse = (timestamp: string) => new Date(timestamp);
 
   return {
     now,
     toISOString,
+    toDateString,
     toDisplayFormat,
     toRelativeTime,
     parse,

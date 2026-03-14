@@ -1,7 +1,20 @@
+import { CalendarDays, Heart, Pencil, Timer } from 'lucide-react';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { Button } from 'src/ui/atoms/Button/Button';
+import { Heading } from 'src/ui/atoms/Heading/Heading';
+import { Text } from 'src/ui/atoms/Text/Text';
+import { useModal } from '../../hooks/useModal';
 import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
 
+const TermsOfServiceDialog = lazy(
+  () => import(/* webpackChunkName: "terms-of-service-dialog" */ './TermsOfServiceDialog').then(m => ({ default: m.TermsOfServiceDialog }))
+);
+
+const CancellationPolicyDialog = lazy(
+  () => import(/* webpackChunkName: "cancellation-policy-dialog" */ './CancellationPolicyDialog').then(m => ({ default: m.CancellationPolicyDialog }))
+);
+
 const DUMMY_SPECIALTY = {
-  icon: 'cardiology',
   name: 'Cardiology',
 };
 
@@ -20,129 +33,199 @@ const DUMMY_APPOINTMENT = {
   duration: '30 min',
 };
 
-const HOLD_TIMER = '04:59';
+const TOTAL_SECONDS = 4 * 60 + 59;
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
 
 export function ReviewAndConfirm() {
   const { t } = useAppointmentsTranslation();
+  const [secondsLeft, setSecondsLeft] = useState(TOTAL_SECONDS);
+  const [timerAnnouncement, setTimerAnnouncement] = useState('');
+  const isComplete = true;
+
+  const tosModal = useModal();
+  const cancellationModal = useModal();
+
+  useEffect(() => {
+    if (secondsLeft <= 0) return;
+    const id = setInterval(() => {
+      setSecondsLeft((prev) => {
+        const next = prev - 1;
+        if (next === 180) setTimerAnnouncement('3 minutes remaining');
+        else if (next === 60) setTimerAnnouncement('1 minute remaining');
+        else if (next === 30) setTimerAnnouncement('30 seconds remaining');
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [secondsLeft]);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+  }
 
   return (
     <div>
-      <h1 className="text-slate-900 dark:text-white tracking-tight text-3xl md:text-4xl font-extrabold leading-tight text-center pb-8">
+      <Heading as="h1" variant="heading-xl">
         {t('appointments.reviewAndConfirm.heading')}
-      </h1>
+      </Heading>
 
-      <div className="bg-white dark:bg-background-dark border-2 border-slate-200 dark:border-primary/30 rounded-xl overflow-hidden shadow-sm mb-8">
-        <div className="p-6 md:p-8 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-primary/10 pb-6">
-            <div className="flex items-start gap-4">
-              <span aria-hidden="true" className="material-symbols-outlined text-primary size-6 mt-1">
-                {DUMMY_SPECIALTY.icon}
-              </span>
-              <div>
-                <p className="text-slate-900 dark:text-white text-sm font-extrabold uppercase tracking-wider mb-1">
-                  {t('appointments.reviewAndConfirm.specialty.label')}
-                </p>
-                <p className="text-slate-900 dark:text-white text-xl font-medium">
-                  {DUMMY_SPECIALTY.name}
-                </p>
+      <form onSubmit={handleSubmit}>
+        <div className="bg-white dark:bg-background-dark border-2 border-slate-200 dark:border-primary/30 rounded-xl overflow-hidden shadow-sm mb-8">
+          <div className="p-6 md:p-8 space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-primary/10 pb-6">
+              <div className="flex items-start gap-4">
+                <Heart aria-hidden="true" className="text-primary size-6 mt-1" />
+                <dl>
+                  <Text as="dt" size="sm" weight="bold">
+                    {t('appointments.reviewAndConfirm.specialty.label')}
+                  </Text>
+                  <Text as="dd" size="xl">
+                    {DUMMY_SPECIALTY.name}
+                  </Text>
+                </dl>
               </div>
+              <Button
+                type="button"
+                variant="ghost"
+                aria-label="Change medical specialty"
+              >
+                <Pencil />
+                {t('appointments.reviewAndConfirm.change')}
+              </Button>
             </div>
-            <button
-              type="button"
-              className="wcag-aaa-outline text-primary font-bold hover:underline px-2 py-1 flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-sm">edit</span>
-              {t('appointments.reviewAndConfirm.change')}
-            </button>
-          </div>
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-primary/10 pb-6">
-            <div className="flex items-start gap-4">
-              <div
-                className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 border border-slate-200"
-                role="img"
-                aria-label={DUMMY_DOCTOR.imageAlt}
-                style={{ backgroundImage: `url("${DUMMY_DOCTOR.imageUrl}")` }}
-              />
-              <div>
-                <p className="text-slate-900 dark:text-white text-sm font-extrabold uppercase tracking-wider mb-1">
-                  {t('appointments.reviewAndConfirm.doctor.label')}
-                </p>
-                <p className="text-slate-900 dark:text-white text-xl font-medium">
-                  {DUMMY_DOCTOR.name}
-                </p>
-                <p className="text-primary font-semibold text-sm">
-                  {DUMMY_DOCTOR.role} &bull; {DUMMY_DOCTOR.clinic}
-                </p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-primary/10 pb-6">
+              <div className="flex items-start gap-4">
+                <div
+                  className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 border border-slate-200"
+                  role="img"
+                  aria-label={DUMMY_DOCTOR.imageAlt}
+                  style={{ backgroundImage: `url("${DUMMY_DOCTOR.imageUrl}")` }}
+                />
+                <dl>
+                  <Text as="dt" size="sm" weight="bold">
+                    {t('appointments.reviewAndConfirm.doctor.label')}
+                  </Text>
+                  <Text as="dd" size="xl">
+                    {DUMMY_DOCTOR.name}
+                  </Text>
+                  <Text as="dd" size="sm" color="secondary">
+                    {DUMMY_DOCTOR.role} &bull; {DUMMY_DOCTOR.clinic}
+                  </Text>
+                </dl>
               </div>
+              <Button
+                type="button"
+                variant="ghost"
+                aria-label="Change healthcare professional"
+              >
+                <Pencil />
+                {t('appointments.reviewAndConfirm.change')}
+              </Button>
             </div>
-            <button
-              type="button"
-              className="wcag-aaa-outline text-primary font-bold hover:underline px-2 py-1 flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-sm">edit</span>
-              {t('appointments.reviewAndConfirm.change')}
-            </button>
-          </div>
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-start gap-4">
-              <span aria-hidden="true" className="material-symbols-outlined text-primary size-6 mt-1">
-                calendar_today
-              </span>
-              <div>
-                <p className="text-slate-900 dark:text-white text-sm font-extrabold uppercase tracking-wider mb-1">
-                  {t('appointments.reviewAndConfirm.time.label')}
-                </p>
-                <p className="text-slate-900 dark:text-white text-xl font-medium">
-                  {DUMMY_APPOINTMENT.date}
-                </p>
-                <p className="text-slate-900 dark:text-white text-lg">
-                  {DUMMY_APPOINTMENT.timeRange} ({DUMMY_APPOINTMENT.duration})
-                </p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <CalendarDays aria-hidden="true" className="text-primary size-6 mt-1" />
+                <dl>
+                  <Text as="dt" size="sm" weight="bold">
+                    {t('appointments.reviewAndConfirm.time.label')}
+                  </Text>
+                  <Text as="dd" size="xl">
+                    {DUMMY_APPOINTMENT.date}
+                  </Text>
+                  <Text as="dd" size="lg">
+                    {DUMMY_APPOINTMENT.timeRange} ({DUMMY_APPOINTMENT.duration})
+                  </Text>
+                </dl>
               </div>
+              <Button
+                type="button"
+                variant="ghost"
+                aria-label="Change appointment time"
+              >
+                <Pencil />
+                {t('appointments.reviewAndConfirm.change')}
+              </Button>
             </div>
-            <button
-              type="button"
-              className="wcag-aaa-outline text-primary font-bold hover:underline px-2 py-1 flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-sm">edit</span>
-              {t('appointments.reviewAndConfirm.change')}
-            </button>
           </div>
         </div>
-      </div>
 
-      <div
-        role="alert"
-        aria-live="polite"
-        className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-600 rounded-lg p-5 flex items-center gap-4 mb-10"
-      >
-        <span aria-hidden="true" className="material-symbols-outlined text-amber-600 size-6">
-          timer
+        <div
+          role="status"
+          className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-600 rounded-lg p-5 flex items-center gap-4 mb-10"
+        >
+          <Timer aria-hidden="true" className="text-amber-600 size-6" />
+          <div className="flex-1">
+            <Text as="p" weight="bold">
+              {t('appointments.reviewAndConfirm.timer.title')}
+            </Text>
+            <Text as="p" size="sm">
+              {t('appointments.reviewAndConfirm.timer.body')}{' '}
+              <span role="timer" className="font-mono font-bold">
+                {formatTime(secondsLeft)}
+              </span>
+            </Text>
+          </div>
+        </div>
+
+        <span aria-live="assertive" className="sr-only">
+          {timerAnnouncement}
         </span>
-        <div className="flex-1">
-          <p className="text-amber-900 dark:text-amber-100 font-bold">
-            {t('appointments.reviewAndConfirm.timer.title')}
-          </p>
-          <p className="text-amber-900 dark:text-amber-200 text-sm">
-            {t('appointments.reviewAndConfirm.timer.body')}{' '}
-            <span className="font-mono font-bold">{HOLD_TIMER}</span>
-          </p>
-        </div>
-      </div>
 
-      <p className="text-center text-slate-500 dark:text-slate-400 text-sm mt-8">
-        {t('appointments.reviewAndConfirm.legal.prefix')}{' '}
-        <a className="underline font-medium" href="#">
-          {t('appointments.reviewAndConfirm.legal.terms')}
-        </a>{' '}
-        {t('appointments.reviewAndConfirm.legal.and')}{' '}
-        <a className="underline font-medium" href="#">
-          {t('appointments.reviewAndConfirm.legal.cancellation')}
-        </a>
-        .
-      </p>
+        <div className="mb-4">
+          <Text as="p" size="sm" color="secondary">
+            {t('appointments.reviewAndConfirm.legal.prefix')}{' '}
+            <Button
+              variant="link"
+              type="button"
+              aria-label="Terms of Service (opens in dialog)"
+              onClick={tosModal.open}
+            >
+              {t('appointments.reviewAndConfirm.legal.terms')}
+            </Button>{' '}
+            {t('appointments.reviewAndConfirm.legal.and')}{' '}
+            <Button
+              variant="link"
+              type="button"
+              aria-label="Cancellation Policy (opens in dialog)"
+              onClick={cancellationModal.open}
+            >
+              {t('appointments.reviewAndConfirm.legal.cancellation')}
+            </Button>
+            .
+          </Text>
+        </div>
+
+        <p id="next-hint" className="sr-only">
+          Complete all steps to proceed
+        </p>
+        <Button
+          type="submit"
+          variant="primary"
+          isDisabled={!isComplete}
+          aria-describedby="next-hint"
+        >
+          {t('appointments.reviewAndConfirm.confirm')}
+        </Button>
+      </form>
+
+      <Suspense>
+        {tosModal.isOpen && (
+          <TermsOfServiceDialog isOpen={tosModal.isOpen} onOpenChange={tosModal.setIsOpen} />
+        )}
+      </Suspense>
+
+      <Suspense>
+        {cancellationModal.isOpen && (
+          <CancellationPolicyDialog isOpen={cancellationModal.isOpen} onOpenChange={cancellationModal.setIsOpen} />
+        )}
+      </Suspense>
     </div>
   );
 }

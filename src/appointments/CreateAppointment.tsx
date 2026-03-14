@@ -155,9 +155,14 @@ const Appointments = () => {
             </Step>
 
             <Step label={t("appointments.steps.pickATime")}>
-              {({ dispatch, isFirst, isLast }) => (
+              {({ dispatch, isFirst }) => (
                 <>
-                  <PickATime />
+                  <PickATime
+                    doctorId={draft.doctor?.id ?? ''}
+                    onSelectionChange={({ date, time }) =>
+                      appointmentDispatch({ type: 'SELECT_DATE_TIME', date, time })
+                    }
+                  />
                   <div className="mt-6 flex justify-between">
                     <Button
                       variant="outline"
@@ -169,7 +174,7 @@ const Appointments = () => {
                     <Button
                       variant="primary"
                       onClick={() => dispatch({ type: "next" })}
-                      isDisabled={isLast}
+                      isDisabled={!stepCanProceed[3](draft)}
                     >
                       {t("appointments.stepper.next")}
                     </Button>

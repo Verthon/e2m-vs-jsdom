@@ -17,7 +17,7 @@
     "test:unit:ci": "vitest run --project unit",
     "test:jsdom:ci": "vitest run --project jsdom",
     "test:e2m": "playwright test",
-    "test.e2m:ui": "playwright test --headed",
+    "test:e2m:ui": "playwright test --headed",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -29,6 +29,7 @@
     "clsx": "2.1.1",
     "lucide-react": "0.574.0",
     "react": "19.2.3",
+    "react-datepicker": "9.1.0",
     "react-dom": "19.2.3",
     "react-error-boundary": "6.1.0",
     "react-intl": "8.1.3",

@@ -1,35 +1,55 @@
 import { useState } from 'react';
 import { DatePicker } from './DatePicker';
 import { TimeSlots } from './TimeSlots';
+import { useGetTimeslots } from '../../hooks/useGetTimeslots';
+import { dateService } from 'src/core/services/dateService';
+import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
+import { Heading } from 'src/ui/atoms/Heading/Heading';
+import { Text } from 'src/ui/atoms/Text/Text';
 
 interface PickATimeProps {
-  readonly onSelectionChange?: (date: number | null, time: string | null) => void;
+  readonly doctorId: string;
+  readonly onSelectionChange?: (selection: { date: Date | null; time: string | null }) => void;
 }
 
-export function PickATime({ onSelectionChange }: PickATimeProps) {
-  const [selectedDate, setSelectedDate] = useState<number | null>(null);
+export function PickATime({ doctorId, onSelectionChange }: PickATimeProps) {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
-  const handleDateSelect = (day: number) => {
-    const next = selectedDate === day ? null : day;
-    setSelectedDate(next);
-    onSelectionChange?.(next, selectedTime);
+  const date = selectedDate ? dateService.toDateString(selectedDate) : '';
+  const { timeslots, isPending, isError, refetch } = useGetTimeslots(doctorId, date);
+
+  const handleDateSelect = (date: Date | null) => {
+    setSelectedDate(date);
+    onSelectionChange?.({ date, time: selectedTime });
   };
 
   const handleTimeSelect = (time: string) => {
     const next = selectedTime === time ? null : time;
     setSelectedTime(next);
-    onSelectionChange?.(selectedDate, next);
+    onSelectionChange?.({ date: selectedDate, time: next });
   };
 
+  const { t } = useAppointmentsTranslation();
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div className="lg:col-span-5">
+    <div className="space-y-6">
+      <div>
+        <Heading as="h2" variant="heading-md">
+          {t('appointments.pickATime.heading')}
+        </Heading>
+        <Text as="p" size="sm" color="secondary">
+          {t('appointments.pickATime.description')}
+        </Text>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <div className="lg:col-span-5 self-start">
         <DatePicker selectedDate={selectedDate} onDateSelect={handleDateSelect} />
       </div>
       <div className="lg:col-span-7">
-        <TimeSlots selectedTime={selectedTime} onTimeSelect={handleTimeSelect} />
+        <TimeSlots selectedTime={selectedTime} onTimeSelect={handleTimeSelect} timeslots={timeslots} isPending={isPending} isError={isError} dateSelected={selectedDate !== null} onRetry={refetch} />
       </div>
+    </div>
     </div>
   );
 }

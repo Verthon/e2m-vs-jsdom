@@ -92,7 +92,7 @@ export const Navbar = () => {
           <SignedIn>
             {user && (
               <Box align="center" gap={6}>
-                <Link component={RouterLink} to="/appointments">
+                <Link component={RouterLink} to={routesConfig.createAppointment}>
                   <Text color="secondary" size="sm">
                     {t("core.nav.myAppointments")}
                   </Text>
