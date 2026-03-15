@@ -1,10 +1,12 @@
-import { CalendarDays, Heart, Pencil, Timer } from 'lucide-react';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { CalendarDays, Heart, Pencil } from 'lucide-react';
+import { lazy, Suspense } from 'react';
 import { Button } from 'src/ui/atoms/Button/Button';
 import { Heading } from 'src/ui/atoms/Heading/Heading';
 import { Text } from 'src/ui/atoms/Text/Text';
 import { useModal } from '../../hooks/useModal';
 import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
+import { Box } from 'src/ui/atoms/Box/Box';
+import { SlotTimer } from './SlotTimer/SlotTimer';
 
 const TermsOfServiceDialog = lazy(
   () => import(/* webpackChunkName: "terms-of-service-dialog" */ './TermsOfServiceDialog').then(m => ({ default: m.TermsOfServiceDialog }))
@@ -33,48 +35,22 @@ const DUMMY_APPOINTMENT = {
   duration: '30 min',
 };
 
-const TOTAL_SECONDS = 4 * 60 + 59;
-
-function formatTime(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-}
-
 export function ReviewAndConfirm() {
   const { t } = useAppointmentsTranslation();
-  const [secondsLeft, setSecondsLeft] = useState(TOTAL_SECONDS);
-  const [timerAnnouncement, setTimerAnnouncement] = useState('');
-  const isComplete = true;
-
   const tosModal = useModal();
   const cancellationModal = useModal();
-
-  useEffect(() => {
-    if (secondsLeft <= 0) return;
-    const id = setInterval(() => {
-      setSecondsLeft((prev) => {
-        const next = prev - 1;
-        if (next === 180) setTimerAnnouncement('3 minutes remaining');
-        else if (next === 60) setTimerAnnouncement('1 minute remaining');
-        else if (next === 30) setTimerAnnouncement('30 seconds remaining');
-        return next;
-      });
-    }, 1000);
-    return () => clearInterval(id);
-  }, [secondsLeft]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
   }
 
   return (
-    <div>
+    <Box gap={12} direction='column'>
       <Heading as="h1" variant="heading-xl">
         {t('appointments.reviewAndConfirm.heading')}
       </Heading>
 
-      <form onSubmit={handleSubmit}>
+      <form id="review-form" onSubmit={handleSubmit}>
         <div className="bg-white dark:bg-background-dark border-2 border-slate-200 dark:border-primary/30 rounded-xl overflow-hidden shadow-sm mb-8">
           <div className="p-6 md:p-8 space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-primary/10 pb-6">
@@ -156,31 +132,11 @@ export function ReviewAndConfirm() {
           </div>
         </div>
 
-        <div
-          role="status"
-          className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-600 rounded-lg p-5 flex items-center gap-4 mb-10"
-        >
-          <Timer aria-hidden="true" className="text-amber-600 size-6" />
-          <div className="flex-1">
-            <Text as="p" weight="bold">
-              {t('appointments.reviewAndConfirm.timer.title')}
-            </Text>
-            <Text as="p" size="sm">
-              {t('appointments.reviewAndConfirm.timer.body')}{' '}
-              <span role="timer" className="font-mono font-bold">
-                {formatTime(secondsLeft)}
-              </span>
-            </Text>
-          </div>
-        </div>
-
-        <span aria-live="assertive" className="sr-only">
-          {timerAnnouncement}
-        </span>
+        <SlotTimer />
 
         <div className="mb-4">
           <Text as="p" size="sm" color="secondary">
-            {t('appointments.reviewAndConfirm.legal.prefix')}{' '}
+            {t('appointments.reviewAndConfirm.legal.prefix')}
             <Button
               variant="link"
               type="button"
@@ -189,7 +145,7 @@ export function ReviewAndConfirm() {
             >
               {t('appointments.reviewAndConfirm.legal.terms')}
             </Button>{' '}
-            {t('appointments.reviewAndConfirm.legal.and')}{' '}
+            {t('appointments.reviewAndConfirm.legal.and')}
             <Button
               variant="link"
               type="button"
@@ -202,17 +158,6 @@ export function ReviewAndConfirm() {
           </Text>
         </div>
 
-        <p id="next-hint" className="sr-only">
-          Complete all steps to proceed
-        </p>
-        <Button
-          type="submit"
-          variant="primary"
-          isDisabled={!isComplete}
-          aria-describedby="next-hint"
-        >
-          {t('appointments.reviewAndConfirm.confirm')}
-        </Button>
       </form>
 
       <Suspense>
@@ -226,6 +171,6 @@ export function ReviewAndConfirm() {
           <CancellationPolicyDialog isOpen={cancellationModal.isOpen} onOpenChange={cancellationModal.setIsOpen} />
         )}
       </Suspense>
-    </div>
+    </Box>
   );
 }

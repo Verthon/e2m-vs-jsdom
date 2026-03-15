@@ -60,5 +60,10 @@
   "appointments.reviewAndConfirm.legal.prefix": "By confirming, you agree to our",
   "appointments.reviewAndConfirm.legal.terms": "Terms of Service",
   "appointments.reviewAndConfirm.legal.and": "and",
-  "appointments.reviewAndConfirm.legal.cancellation": "Cancellation Policy"
+  "appointments.reviewAndConfirm.legal.cancellation": "Cancellation Policy",
+  "appointments.reviewAndConfirm.confirmHint": "Complete all steps to proceed",
+  "appointments.reviewAndConfirm.timer.expired.title": "Your timeslot has expired",
+  "appointments.reviewAndConfirm.timer.expired.description": "The reserved timeslot is no longer available. You can start the booking process again or return to the homepage.",
+  "appointments.reviewAndConfirm.timer.expired.startOver": "Start over",
+  "appointments.reviewAndConfirm.timer.expired.goHome": "Go to homepage"
 }

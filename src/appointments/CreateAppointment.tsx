@@ -7,6 +7,7 @@ import { PickATime } from "./components/PickATime/PickATime";
 import { ChooseDoctor } from "./components/ChooseDoctor/ChooseDoctor";
 import { ReviewAndConfirm } from "./components/ReviewAndConfirm/ReviewAndConfirm";
 import { Step } from "./components/Stepper/Step";
+import { Heading } from "src/ui/atoms/Heading/Heading";
 
 /* BookingHeader — extract once header is shared across multiple booking steps */
 function BookingHeader() {
@@ -34,10 +35,10 @@ function QuickGuide() {
   const { t } = useAppointmentsTranslation();
 
   return (
-    <aside className="rounded-2xl border border-slate-200 bg-white p-6 space-y-6">
-      <h2 className="text-base font-bold text-slate-900">
+    <aside className="rounded-2xl border border-slate-200 bg-white p-6 space-y-6 gap-2.5">
+      <Heading as='h2' variant='heading-md'>
         {t("appointments.quickGuide.title")}
-      </h2>
+      </Heading>
 
       {/* QuickGuideSection */}
       <div className="space-y-1">
@@ -184,7 +185,7 @@ const Appointments = () => {
             </Step>
 
             <Step label={t("appointments.steps.reviewAndConfirm")}>
-              {({ dispatch, isFirst, isLast }) => (
+              {({ dispatch, isFirst }) => (
                 <>
                   <ReviewAndConfirm />
                   <div className="mt-6 flex justify-between">
@@ -195,13 +196,19 @@ const Appointments = () => {
                     >
                       {t("appointments.stepper.back")}
                     </Button>
-                    <Button
-                      variant="primary"
-                      onClick={() => dispatch({ type: "next" })}
-                      isDisabled={isLast}
-                    >
-                      {t("appointments.stepper.next")}
-                    </Button>
+                    <div>
+                      <p id="confirm-hint" className="sr-only">
+                        {t("appointments.reviewAndConfirm.confirmHint")}
+                      </p>
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        form="review-form"
+                        aria-describedby="confirm-hint"
+                      >
+                        {t("appointments.reviewAndConfirm.confirm")}
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
