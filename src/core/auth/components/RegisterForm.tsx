@@ -46,7 +46,7 @@ const createSchema = (t: ReturnType<typeof useCoreTranslation>["t"]) =>
 export const RegisterForm = () => {
   const { t } = useCoreTranslation();
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string | string[]>>({});
   const { register, isPending } = useRegister();
 
   const submitForm = async (formValues: Form.Values) => {
@@ -54,15 +54,16 @@ export const RegisterForm = () => {
     const result = schema.safeParse(formValues);
 
     if (!result.success) {
+      const fieldErrors = z.flattenError(result.error).fieldErrors;
       return {
-        errors: z.flattenError(result.error).fieldErrors,
+        errors: fieldErrors,
       };
     }
 
     register({
-      username: result.data.username,
-      email: result.data.email,
-      password: result.data.password,
+      username: result.data.username as string,
+      email: result.data.email as string,
+      password: result.data.password as string,
     });
 
     return {
@@ -81,26 +82,43 @@ export const RegisterForm = () => {
       validationMode="onBlur"
       onFormSubmit={async (formValues) => {
         const response = await submitForm(formValues);
-        console.log("response.errors", response.errors);
         setErrors(response.errors);
       }}
     >
       <Field.Root name="username">
         <Field.Label>{t("core.auth.register.usernameLabel")}</Field.Label>
         <Field.Control type="text" autoComplete="username" required />
-        <Field.Error />
+        <Field.Error match="valueMissing">
+          {t("core.auth.register.error.usernameRequired")}
+        </Field.Error>
+        {errors.username?.[0] && (
+          <Field.Error forceShow>{errors.username[0]}</Field.Error>
+        )}
       </Field.Root>
 
       <Field.Root name="email">
         <Field.Label>{t("core.auth.register.emailLabel")}</Field.Label>
         <Field.Control type="email" autoComplete="email" required />
-        <Field.Error />
+        <Field.Error match="valueMissing">
+          {t("core.auth.register.error.emailRequired")}
+        </Field.Error>
+        <Field.Error match="typeMismatch">
+          {t("core.auth.register.error.emailInvalid")}
+        </Field.Error>
+        {errors.email?.[0] && (
+          <Field.Error forceShow>{errors.email[0]}</Field.Error>
+        )}
       </Field.Root>
 
       <Field.Root name="password">
         <Field.Label>{t("core.auth.register.passwordLabel")}</Field.Label>
         <Field.Control type="password" autoComplete="new-password" required />
-        <Field.Error />
+        <Field.Error match="valueMissing">
+          {t("core.auth.register.error.passwordRequired")}
+        </Field.Error>
+        {errors.password?.[0] && (
+          <Field.Error forceShow>{errors.password[0]}</Field.Error>
+        )}
       </Field.Root>
 
       <Field.Root name="confirmPassword">
@@ -108,7 +126,12 @@ export const RegisterForm = () => {
           {t("core.auth.register.confirmPasswordLabel")}
         </Field.Label>
         <Field.Control type="password" autoComplete="new-password" required />
-        <Field.Error />
+        <Field.Error match="valueMissing">
+          {t("core.auth.register.error.confirmPasswordRequired")}
+        </Field.Error>
+        {errors.confirmPassword?.[0] && (
+          <Field.Error forceShow>{errors.confirmPassword[0]}</Field.Error>
+        )}
       </Field.Root>
 
       <div className="flex flex-col gap-3">

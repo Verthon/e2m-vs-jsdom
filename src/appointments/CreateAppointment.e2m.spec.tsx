@@ -38,6 +38,14 @@ test.describe('patient appointment booking process', () => {
 
     await expect(timeSlotButton).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('button', { name: 'Next', exact: true })).not.toHaveAttribute('aria-disabled');
+
+    await page.getByRole('button', { name: 'Next', exact: true }).click();
+
+    await expect(
+      page.getByRole('heading', { name: 'Review your appointment details', level: 1 }),
+    ).toBeVisible();
+
+    await page.getByRole('button', { name: 'Confirm appointment' }).click();
   });
 
   test('should not persist the chosen doctor when user go back and change the specialty', async ({

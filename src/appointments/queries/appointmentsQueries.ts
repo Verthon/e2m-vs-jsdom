@@ -1,5 +1,5 @@
-import { queryOptions } from '@tanstack/react-query';
-import { fetchSpecialties, fetchDoctorsBySpecialty, fetchTimeslots, fetchTermsOfService, fetchCancellationPolicy } from '../services/appointmentsService';
+import { queryOptions, mutationOptions } from '@tanstack/react-query';
+import { fetchSpecialties, fetchDoctorsBySpecialty, fetchTimeslots, fetchTermsOfService, fetchCancellationPolicy, createAppointment } from '../services/appointmentsService';
 
 export const appointmentsQueries = {
   all: () => ['appointments'] as const,
@@ -42,3 +42,11 @@ export const appointmentsQueries = {
       retry: false,
     }),
 } as const;
+
+export const appointmentMutations = {
+  create: () =>
+    mutationOptions({
+      mutationFn: createAppointment,
+    }),
+} as const;
+

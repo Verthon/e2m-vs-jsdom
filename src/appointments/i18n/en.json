@@ -55,7 +55,9 @@
   "appointments.reviewAndConfirm.time.label": "Appointment Time",
   "appointments.reviewAndConfirm.change": "Change",
   "appointments.reviewAndConfirm.confirm": "Confirm appointment",
+  "appointments.reviewAndConfirm.error": "Something went wrong while confirming your appointment. Please try again.",
   "appointments.reviewAndConfirm.timer.title": "Timeslot held for 5 minutes",
+
   "appointments.reviewAndConfirm.timer.body": "Please complete your booking to secure this time. Remaining:",
   "appointments.reviewAndConfirm.legal.prefix": "By confirming, you agree to our",
   "appointments.reviewAndConfirm.legal.terms": "Terms of Service",

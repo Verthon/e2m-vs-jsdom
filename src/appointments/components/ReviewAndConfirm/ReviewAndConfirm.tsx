@@ -1,4 +1,4 @@
-import { CalendarDays, Heart, Pencil } from 'lucide-react';
+import { CalendarDays, Heart, Pencil, AlertCircle } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 import { Button } from 'src/ui/atoms/Button/Button';
 import { Heading } from 'src/ui/atoms/Heading/Heading';
@@ -7,6 +7,8 @@ import { useModal } from '../../hooks/useModal';
 import { useAppointmentsTranslation } from '../../i18n/useAppointmentsTranslation';
 import { Box } from 'src/ui/atoms/Box/Box';
 import { SlotTimer } from './SlotTimer/SlotTimer';
+import type { AppointmentDraft } from '../../types';
+import { useCreateAppointment } from '../../hooks/useCreateAppointment';
 
 const TermsOfServiceDialog = lazy(
   () => import(/* webpackChunkName: "terms-of-service-dialog" */ './TermsOfServiceDialog').then(m => ({ default: m.TermsOfServiceDialog }))
@@ -16,36 +18,62 @@ const CancellationPolicyDialog = lazy(
   () => import(/* webpackChunkName: "cancellation-policy-dialog" */ './CancellationPolicyDialog').then(m => ({ default: m.CancellationPolicyDialog }))
 );
 
-const DUMMY_SPECIALTY = {
-  name: 'Cardiology',
-};
+interface ReviewAndConfirmProps {
+  readonly draft: AppointmentDraft;
+}
 
-const DUMMY_DOCTOR = {
-  imageUrl:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuAiUVsZE1Iw3CH7i_CALbg-mYY79glCy0aNHZMY2pqORmTugnJe4t_RmTwHQVXmEybjrUPZYYApQEZp1TH633iyQHmB7PNDbh-Dv06BJ1qo8L4s3SvjyGziV4hPVZy46dqSQ6k9JgQp3bmr_UaDyWfgp8adTWVi4VY9Of1tc_lHB16Uj-mSZ1Yy2tqrXz2-wjZtqHhByH1qsipMoyCnJa1Z7edkIyNS1ImUyPowVRrzjiHgnI0I1Pr6fhuqUYZnUDWO5g_BpZn1UMk',
-  imageAlt: 'Portrait of Dr. Sarah Jenkins, cardiologist',
-  name: 'Dr. Sarah Jenkins',
-  role: 'Senior Cardiologist',
-  clinic: 'Heart & Lung Center',
-};
-
-const DUMMY_APPOINTMENT = {
-  date: 'Tuesday, Oct 24, 2023',
-  timeRange: '10:30 AM — 11:00 AM',
-  duration: '30 min',
-};
-
-export function ReviewAndConfirm() {
+export function ReviewAndConfirm({ draft }: ReviewAndConfirmProps) {
   const { t } = useAppointmentsTranslation();
   const tosModal = useModal();
   const cancellationModal = useModal();
+  const { createAppointment, isPending, isError } = useCreateAppointment();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!draft.specialty || !draft.doctor || !draft.date || !draft.time) {
+      return;
+    }
+
+    createAppointment({
+      specialtyId: draft.specialty.id,
+      doctorId: draft.doctor.id,
+      date: draft.date.toISOString(),
+      time: draft.time,
+    });
   }
 
+  const formattedDate = draft.date
+    ? new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }).format(draft.date)
+    : '';
+
+  const calculateEndTime = (startTime: string) => {
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const endTotalMinutes = hours * 60 + minutes + 30;
+    const endHours = Math.floor(endTotalMinutes / 60);
+    const endMinutes = endTotalMinutes % 60;
+    const ampm = endHours >= 12 ? 'PM' : 'AM';
+    const displayHours = endHours % 12 || 12;
+    return `${displayHours}:${endMinutes.toString().padStart(2, '0')} ${ampm}`;
+  };
+
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  };
+
+  const timeRange = draft.time
+    ? `${formatTime(draft.time)} — ${calculateEndTime(draft.time)}`
+    : '';
+
   return (
-    <Box gap={12} direction='column'>
+    <Box gap={12} direction="column">
       <Heading as="h1" variant="heading-xl">
         {t('appointments.reviewAndConfirm.heading')}
       </Heading>
@@ -61,7 +89,7 @@ export function ReviewAndConfirm() {
                     {t('appointments.reviewAndConfirm.specialty.label')}
                   </Text>
                   <Text as="dd" size="xl">
-                    {DUMMY_SPECIALTY.name}
+                    {draft.specialty?.name}
                   </Text>
                 </dl>
               </div>
@@ -69,6 +97,7 @@ export function ReviewAndConfirm() {
                 type="button"
                 variant="ghost"
                 aria-label="Change medical specialty"
+                isDisabled={isPending}
               >
                 <Pencil />
                 {t('appointments.reviewAndConfirm.change')}
@@ -80,18 +109,15 @@ export function ReviewAndConfirm() {
                 <div
                   className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 border border-slate-200"
                   role="img"
-                  aria-label={DUMMY_DOCTOR.imageAlt}
-                  style={{ backgroundImage: `url("${DUMMY_DOCTOR.imageUrl}")` }}
+                  aria-label={`Portrait of ${draft.doctor?.name}`}
+                  style={{ backgroundImage: `url("${draft.doctor?.photoUrl}")` }}
                 />
                 <dl>
                   <Text as="dt" size="sm" weight="bold">
                     {t('appointments.reviewAndConfirm.doctor.label')}
                   </Text>
                   <Text as="dd" size="xl">
-                    {DUMMY_DOCTOR.name}
-                  </Text>
-                  <Text as="dd" size="sm" color="secondary">
-                    {DUMMY_DOCTOR.role} &bull; {DUMMY_DOCTOR.clinic}
+                    {draft.doctor?.name}
                   </Text>
                 </dl>
               </div>
@@ -99,6 +125,7 @@ export function ReviewAndConfirm() {
                 type="button"
                 variant="ghost"
                 aria-label="Change healthcare professional"
+                isDisabled={isPending}
               >
                 <Pencil />
                 {t('appointments.reviewAndConfirm.change')}
@@ -113,10 +140,10 @@ export function ReviewAndConfirm() {
                     {t('appointments.reviewAndConfirm.time.label')}
                   </Text>
                   <Text as="dd" size="xl">
-                    {DUMMY_APPOINTMENT.date}
+                    {formattedDate}
                   </Text>
                   <Text as="dd" size="lg">
-                    {DUMMY_APPOINTMENT.timeRange} ({DUMMY_APPOINTMENT.duration})
+                    {timeRange} (30 min)
                   </Text>
                 </dl>
               </div>
@@ -124,6 +151,7 @@ export function ReviewAndConfirm() {
                 type="button"
                 variant="ghost"
                 aria-label="Change appointment time"
+                isDisabled={isPending}
               >
                 <Pencil />
                 {t('appointments.reviewAndConfirm.change')}
@@ -134,7 +162,16 @@ export function ReviewAndConfirm() {
 
         <SlotTimer />
 
-        <div className="mb-4">
+        {isError && (
+          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 mb-8 flex items-center gap-3" role="alert">
+            <AlertCircle className="size-5 shrink-0" />
+            <Text size="sm">
+              {t('appointments.reviewAndConfirm.error')}
+            </Text>
+          </div>
+        )}
+
+        <div className="mb-8">
           <Text as="p" size="sm" color="secondary">
             {t('appointments.reviewAndConfirm.legal.prefix')}
             <Button
@@ -142,6 +179,7 @@ export function ReviewAndConfirm() {
               type="button"
               aria-label="Terms of Service (opens in dialog)"
               onClick={tosModal.open}
+              isDisabled={isPending}
             >
               {t('appointments.reviewAndConfirm.legal.terms')}
             </Button>{' '}
@@ -151,13 +189,13 @@ export function ReviewAndConfirm() {
               type="button"
               aria-label="Cancellation Policy (opens in dialog)"
               onClick={cancellationModal.open}
+              isDisabled={isPending}
             >
               {t('appointments.reviewAndConfirm.legal.cancellation')}
             </Button>
             .
           </Text>
         </div>
-
       </form>
 
       <Suspense>

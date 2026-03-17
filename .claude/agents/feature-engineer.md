@@ -6,4 +6,4 @@ color: red
 memory: project
 ---
 
-@.agents/feature-engineer.md
+@.agents/feature-engineer/agent.md

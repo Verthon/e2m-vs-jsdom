@@ -37,5 +37,18 @@ export const createAppointmentHandlers = (baseUrl: string) => {
     http.get(`${baseUrl}/cancellation-policy`, () => {
       return HttpResponse.json(cancellationPolicyMock);
     }),
+    http.post(`${baseUrl}/appointments`, async ({ request }) => {
+      const body = await request.json() as any;
+      
+      return HttpResponse.json({
+        id: crypto.randomUUID(),
+        specialtyName: 'Specialty Name', // In a real mock we might look this up
+        doctorName: 'Doctor Name',
+        date: body.date,
+        time: body.time,
+        status: 'confirmed'
+      }, { status: 201 });
+    }),
   ];
 };
+

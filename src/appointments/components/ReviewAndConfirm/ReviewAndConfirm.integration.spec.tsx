@@ -7,6 +7,14 @@ import {
 } from "src/test/testProvider";
 import { ReviewAndConfirm } from "./ReviewAndConfirm";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import type { AppointmentDraft } from "../../types";
+
+const mockDraft: AppointmentDraft = {
+  specialty: { id: "1", name: "Cardiology", description: "Heart care" },
+  doctor: { id: "1", name: "Dr. Sarah Jenkins", photoUrl: "doctor.jpg" },
+  date: new Date("2023-10-24"),
+  time: "10:30",
+};
 
 describe("review and confirm the appointment", () => {
   it("patient can read the terms of service", async () => {
@@ -16,7 +24,7 @@ describe("review and confirm the appointment", () => {
       <TestRouterProvider>
         <TestI18nProvider>
           <TestQueryProvider>
-            <ReviewAndConfirm />
+            <ReviewAndConfirm draft={mockDraft} />
           </TestQueryProvider>
         </TestI18nProvider>
       </TestRouterProvider>,
@@ -46,7 +54,7 @@ describe("review and confirm the appointment", () => {
       <TestRouterProvider>
         <TestI18nProvider>
           <TestQueryProvider>
-            <ReviewAndConfirm />
+            <ReviewAndConfirm draft={mockDraft} />
           </TestQueryProvider>
         </TestI18nProvider>
       </TestRouterProvider>,
@@ -83,7 +91,7 @@ describe("review and confirm the appointment", () => {
         <TestRouterProvider>
           <TestI18nProvider>
             <TestQueryProvider>
-              <ReviewAndConfirm />
+              <ReviewAndConfirm draft={mockDraft} />
             </TestQueryProvider>
           </TestI18nProvider>
         </TestRouterProvider>,
@@ -110,7 +118,7 @@ describe("review and confirm the appointment", () => {
         <TestRouterProvider>
           <TestI18nProvider>
             <TestQueryProvider>
-              <ReviewAndConfirm />
+              <ReviewAndConfirm draft={mockDraft} />
             </TestQueryProvider>
           </TestI18nProvider>
         </TestRouterProvider>,

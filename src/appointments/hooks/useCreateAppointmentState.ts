@@ -1,23 +1,5 @@
 import { useReducer } from 'react';
-
-type SelectedSpecialty = {
-  id: string;
-  name: string;
-  description: string;
-};
-
-type SelectedDoctor = {
-  id: string;
-  name: string;
-  photoUrl: string;
-};
-
-type AppointmentDraft = {
-  specialty: SelectedSpecialty | null;
-  doctor: SelectedDoctor | null;
-  date: Date | null;
-  time: string | null;
-};
+import type { AppointmentDraft } from '../types';
 
 type BookingAction =
   | { type: 'SELECT_SPECIALTY'; id: string; name: string; description: string }

@@ -1,4 +1,5 @@
 import { beforeAll, afterEach, afterAll } from "vitest";
+import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { setupServer } from "msw/node";
 import { createAuthHandlers } from "src/core/auth/mocks/authHandlers";
@@ -18,6 +19,7 @@ beforeAll(() => {
   setViewport("mobile");
 });
 afterEach(() => {
+  cleanup();
   server.resetHandlers();
   resetViewport();
 });

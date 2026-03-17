@@ -2,7 +2,7 @@ import { createHttpClient } from "src/core/api/services/httpClientService"
 import type { DoctorsBySpecialtyResponse } from "../responses/DoctorsBySpecialty"
 import type { TimeslotsResponse } from "../responses/Timeslots"
 import type { SpecialtiesResponse } from "../responses/Specialties"
-import type { TermsOfServiceResponse, CancellationPolicyResponse } from "../types"
+import type { CreateAppointmentRequest, CreateAppointmentResponse, TermsOfServiceResponse, CancellationPolicyResponse } from "../types"
 
 const apiUrl = import.meta.env.PUBLIC_APPOINTMENTS_API
 if (!apiUrl) {
@@ -27,3 +27,6 @@ export const fetchTermsOfService = () =>
 
 export const fetchCancellationPolicy = () =>
   appointmentsClient.get<CancellationPolicyResponse>('/cancellation-policy')
+
+export const createAppointment = (request: CreateAppointmentRequest) =>
+  appointmentsClient.post<CreateAppointmentResponse>('/appointments', { body: request })

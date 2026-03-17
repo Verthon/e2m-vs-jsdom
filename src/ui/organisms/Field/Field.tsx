@@ -104,7 +104,7 @@ const FieldControl = (props: BaseField.Control.Props) => (
  * <Field.Error forceShow>That email is already registered</Field.Error>
  * ```
  */
-const FieldError = (props: BaseField.Error.Props) => (
+const FieldError = (props: BaseField.Error.Props & { forceShow?: boolean }) => (
   <BaseField.Error {...props} className="text-sm text-red-600" />
 );
 

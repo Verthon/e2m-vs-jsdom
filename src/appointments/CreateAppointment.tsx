@@ -187,7 +187,7 @@ const Appointments = () => {
             <Step label={t("appointments.steps.reviewAndConfirm")}>
               {({ dispatch, isFirst }) => (
                 <>
-                  <ReviewAndConfirm />
+                  <ReviewAndConfirm draft={draft} />
                   <div className="mt-6 flex justify-between">
                     <Button
                       variant="outline"
