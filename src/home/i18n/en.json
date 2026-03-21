@@ -1,0 +1,31 @@
+{
+  "home.nav.brand": "Flatline",
+  "home.nav.appointments": "Appointments",
+  "home.nav.records": "Records",
+  "home.nav.assistant": "Assistant",
+  "home.nav.notifications": "Notifications",
+  "home.nav.login": "Log in",
+  "home.nav.signup": "Sign up",
+  "home.nav.pro": "Pro",
+
+  "home.hero.headline": "Healthcare that runs on evidence, not vibes.*",
+  "home.hero.subtext": "AI-assisted diagnostics. Real doctors. Appointments you can actually get. We measured.",
+  "home.hero.cta.primary": "Create Free Account",
+  "home.hero.cta.secondary": "See How It Works",
+  "home.hero.image.alt": "Patient in waiting room",
+
+  "home.metrics.appointmentsBooked.value": "{count}+",
+  "home.metrics.appointmentsBooked.label": "appointments booked",
+  "home.metrics.waitTime.value": "< {minutes} min",
+  "home.metrics.waitTime.label": "average wait time",
+  "home.metrics.patientRating.value": "{rating} / 5",
+  "home.metrics.patientRating.label": "patient rating",
+  "home.metrics.verifiedDoctors.value": "{count}+",
+  "home.metrics.verifiedDoctors.label": "verified doctors",
+
+  "home.footer.vibesDisclaimer": "*we do use vibes for the waiting room playlist",
+  "home.footer.privacyPolicy": "Privacy Policy",
+  "home.footer.termsOfService": "Terms of Service",
+  "home.footer.contact": "Contact",
+  "home.footer.clinicalDisclaimer": "* All services subject to clinical review and availability."
+}

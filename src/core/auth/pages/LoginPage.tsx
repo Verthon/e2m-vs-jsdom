@@ -18,7 +18,7 @@ const LoginPage = () => {
                 {t('core.auth.login.title')}
               </Heading>
             </div>
-            <Text size="sm" color="secondary">
+            <Text variant="s" color="grey600">
               {t('core.auth.login.subtitle')}
             </Text>
           </div>

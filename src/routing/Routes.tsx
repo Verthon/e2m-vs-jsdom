@@ -4,9 +4,13 @@ import { Outlet, Route, Routes } from "react-router";
 import { PageLoader } from "src/ui/atoms/PageLoader/PageLoader";
 
 import { routesConfig } from "./routesConfig";
-import LandingPage from "src/core/pages/Landing";
 
 type LazyComponent = React.LazyExoticComponent<() => JSX.Element>;
+
+const HomePage = lazy(
+  () =>
+    import(/* webpackChunkName: "home-page" */ "../home/pages/Home"),
+);
 
 const LoginPage = lazy(
   () =>
@@ -40,7 +44,7 @@ export const AppRoutes = () => (
   <Suspense fallback={<PageLoader />}>
     <Routes>
       <Route element={<RootLayout />}>
-        <Route path={routesConfig.home} element={<LandingPage />} />
+        <Route path={routesConfig.home} element={<HomePage />} />
         <Route path={routesConfig.login} element={<LoginPage />} />
         <Route path={routesConfig.signup} element={<RegisterPage />} />
         <Route

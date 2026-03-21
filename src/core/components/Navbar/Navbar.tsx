@@ -76,7 +76,7 @@ export const Navbar = () => {
                   strokeLinejoin="round"
                 ></path>
               </svg>
-              <Text weight="bold" size="lg">
+              <Text weight="bold" variant="l">
                 {t("core.nav.brand")}
               </Text>
             </Box>
@@ -93,7 +93,7 @@ export const Navbar = () => {
             {user && (
               <Box align="center" gap={6}>
                 <Link component={RouterLink} to={routesConfig.createAppointment}>
-                  <Text color="secondary" size="sm">
+                  <Text color="grey600" variant="s">
                     {t("core.nav.myAppointments")}
                   </Text>
                 </Link>
@@ -110,8 +110,11 @@ export const Navbar = () => {
 
           <SignedOut>
             <Box align="center" gap={6}>
+              {/* Marketing links — visible only to unauthenticated visitors */}
+              <Text color="grey600" variant="s">How it works</Text>
+              <Text color="grey600" variant="s">Pricing</Text>
               <Link component={RouterLink} to={routesConfig.login}>
-                <Text color="secondary" size="sm">
+                <Text color="grey600" variant="s">
                   {t("core.nav.login")}
                 </Text>
               </Link>

@@ -85,10 +85,10 @@ export function ReviewAndConfirm({ draft }: ReviewAndConfirmProps) {
               <div className="flex items-start gap-4">
                 <Heart aria-hidden="true" className="text-primary size-6 mt-1" />
                 <dl>
-                  <Text as="dt" size="sm" weight="bold">
+                  <Text as="dt" variant="s" weight="bold">
                     {t('appointments.reviewAndConfirm.specialty.label')}
                   </Text>
-                  <Text as="dd" size="xl">
+                  <Text as="dd" variant="xl">
                     {draft.specialty?.name}
                   </Text>
                 </dl>
@@ -113,10 +113,10 @@ export function ReviewAndConfirm({ draft }: ReviewAndConfirmProps) {
                   style={{ backgroundImage: `url("${draft.doctor?.photoUrl}")` }}
                 />
                 <dl>
-                  <Text as="dt" size="sm" weight="bold">
+                  <Text as="dt" variant="s" weight="bold">
                     {t('appointments.reviewAndConfirm.doctor.label')}
                   </Text>
-                  <Text as="dd" size="xl">
+                  <Text as="dd" variant="xl">
                     {draft.doctor?.name}
                   </Text>
                 </dl>
@@ -136,13 +136,13 @@ export function ReviewAndConfirm({ draft }: ReviewAndConfirmProps) {
               <div className="flex items-start gap-4">
                 <CalendarDays aria-hidden="true" className="text-primary size-6 mt-1" />
                 <dl>
-                  <Text as="dt" size="sm" weight="bold">
+                  <Text as="dt" variant="s" weight="bold">
                     {t('appointments.reviewAndConfirm.time.label')}
                   </Text>
-                  <Text as="dd" size="xl">
+                  <Text as="dd" variant="xl">
                     {formattedDate}
                   </Text>
-                  <Text as="dd" size="lg">
+                  <Text as="dd" variant="l">
                     {timeRange} (30 min)
                   </Text>
                 </dl>
@@ -165,14 +165,14 @@ export function ReviewAndConfirm({ draft }: ReviewAndConfirmProps) {
         {isError && (
           <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 mb-8 flex items-center gap-3" role="alert">
             <AlertCircle className="size-5 shrink-0" />
-            <Text size="sm">
+            <Text variant="s">
               {t('appointments.reviewAndConfirm.error')}
             </Text>
           </div>
         )}
 
         <div className="mb-8">
-          <Text as="p" size="sm" color="secondary">
+          <Text as="p" variant="s" color="grey600">
             {t('appointments.reviewAndConfirm.legal.prefix')}
             <Button
               variant="link"

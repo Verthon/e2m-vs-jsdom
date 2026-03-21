@@ -1,5 +1,9 @@
 # Project: Medical Appointment Booking (Flatline)
 
+## Brand
+
+The product name is **Flatline**. This is the single source of truth — see `DESIGN.md` for the full visual identity.
+
 ## Goal
 
 Compare the performance, maintainability of jsdom vs end-to-mock playwright tests.

@@ -1,57 +1,73 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 
+const variantClassMap = {
+  caption: 'text-xs',
+  s: 'text-sm',
+  m: 'text-base',
+  l: 'text-lg',
+  xl: 'text-xl',
+} as const;
+
+const colorClassMap = {
+  grey50: 'text-grey-50',
+  grey100: 'text-grey-100',
+  grey200: 'text-grey-200',
+  grey300: 'text-grey-300',
+  grey400: 'text-grey-400',
+  grey500: 'text-grey-500',
+  grey600: 'text-grey-600',
+  grey700: 'text-grey-700',
+  grey800: 'text-grey-800',
+  grey900: 'text-grey-900',
+  grey950: 'text-grey-950',
+} as const;
+
 const weightClassMap = {
   bold: 'font-bold',
   'semi-bold': 'font-semibold',
   regular: 'font-normal',
 } as const;
 
-const sizeClassMap = {
-  xs: 'text-xs',
-  sm: 'text-sm',
-  base: 'text-base',
-  lg: 'text-lg',
-  xl: 'text-xl',
-  '2xl': 'text-2xl',
-} as const;
+type TextVariant = keyof typeof variantClassMap;
+type TextColor = keyof typeof colorClassMap;
+type TextWeight = keyof typeof weightClassMap;
 
-const colorClassMap = {
-  primary: 'text-gray-900',
-  secondary: 'text-gray-600',
-  tertiary: 'text-gray-500',
-  error: 'text-red-600',
-  success: 'text-green-600',
-} as const;
-
-export type TextWeight = keyof typeof weightClassMap;
-export type TextSize = keyof typeof sizeClassMap;
-export type TextColor = keyof typeof colorClassMap;
-
-type TextOwnProps<E extends ElementType = ElementType> = {
+type TextOwnProps<Element extends ElementType = ElementType> = {
   children: ReactNode;
-  weight?: TextWeight;
-  size?: TextSize;
+  /** Controls the font size. Defaults to `m` (16px). */
+  variant?: TextVariant;
+  /** Controls the text colour using the greyscale design token palette. Defaults to `grey900`. */
   color?: TextColor;
-  as?: E;
+  /** Controls the font weight. Defaults to `regular`. */
+  weight?: TextWeight;
+  /** Renders as a different HTML element. Defaults to `span`. */
+  as?: Element;
 };
 
-type TextProps<E extends ElementType> = TextOwnProps<E> &
-  Omit<ComponentPropsWithoutRef<E>, keyof TextOwnProps>;
+type TextProps<Element extends ElementType> = TextOwnProps<Element> &
+  Omit<ComponentPropsWithoutRef<Element>, keyof TextOwnProps>;
 
-export const Text = <E extends ElementType = 'span'>({
+/**
+ * Inline text primitive with greyscale colour tokens and size variants.
+ *
+ * @example
+ * <Text variant="s" color="grey600">Subtitle</Text>
+ * <Text variant="xl" weight="bold" as="p">Heading-like paragraph</Text>
+ */
+export const Text = <Element extends ElementType = 'span'>({
   children,
+  variant = 'm',
+  color = 'grey900',
   weight = 'regular',
-  size = 'base',
-  color = 'primary',
   as,
   ...props
-}: TextProps<E>) => {
+}: TextProps<Element>) => {
   const Component = as || 'span';
-  const weightClass = weightClassMap[weight];
-  const sizeClass = sizeClassMap[size];
+  const variantClass = variantClassMap[variant];
   const colorClass = colorClassMap[color];
+  const weightClass = weightClassMap[weight];
   return (
-    <Component className={`${weightClass} ${sizeClass} ${colorClass}`} {...props}>
+    <Component className={`${variantClass} ${colorClass} ${weightClass}`} {...props}>
       {children}
     </Component>
   );

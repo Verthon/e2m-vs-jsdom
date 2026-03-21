@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { MemoryRouter } from "react-router";
+import { Link as RouterLink } from "react-router";
 
 import { Button } from "./Button";
 
@@ -92,5 +94,25 @@ export const WithIcon: Story = {
         Continue <ArrowIcon />
       </Button>
     </div>
+  ),
+};
+
+/** Renders as an `<a>` tag — use when linking to external URLs or non-SPA routes. */
+export const AsAnchor: Story = {
+  render: () => (
+    <Button component="a" href="https://example.com" variant="primary" target="_blank" rel="noreferrer">
+      External link
+    </Button>
+  ),
+};
+
+/** Renders as a React Router Link — use for in-app navigation. Wrapped in MemoryRouter for Storybook. */
+export const AsRouterLink: Story = {
+  render: () => (
+    <MemoryRouter>
+      <Button component={RouterLink} to="/appointments" variant="outline">
+        Book appointment
+      </Button>
+    </MemoryRouter>
   ),
 };

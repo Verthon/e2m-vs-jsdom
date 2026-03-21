@@ -15,3 +15,10 @@ import { Button } from 'src/ui/atoms/Button/Button';
 <Star size={14} className="fill-current" />
 <CalendarCheck size={20} />
 ```
+
+## 2. TypoGraphy
+
+- **Trigger:** Building UI elements within a feature that needs any sort of the text (p, span, headings etc)
+- **Rules**:
+- use the `src/ui/Text/Text` or for headings `scr/ui/Heading/Heading`, 
+- for any text always add the translation for corresponding en.json to the module your are working on

@@ -40,10 +40,10 @@ export function SlotTimer() {
       >
         <Timer aria-hidden="true" className="text-amber-600 size-6" />
         <div className="flex-1">
-          <Text as="p" weight="bold">
+          <Text as="p" weight="bold" variant="m">
             {t('appointments.reviewAndConfirm.timer.title')}
           </Text>
-          <Text as="p" size="sm">
+          <Text as="p" variant="s">
             {t('appointments.reviewAndConfirm.timer.body')}{' '}
             <span role="timer" className="font-mono font-bold">
               {formatTime(secondsLeft)}

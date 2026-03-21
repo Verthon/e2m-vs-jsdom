@@ -38,7 +38,7 @@ type LinkProps<Element extends ElementType = 'a'> = Element extends 'a'
  *
  * // With React Router Link
  * <Link component={RouterLink} to={routesConfig.home}>
- *   <Text weight="bold" size="lg">Brand</Text>
+ *   <Text weight="bold" variant="l">Brand</Text>
  * </Link>
  * ```
  */

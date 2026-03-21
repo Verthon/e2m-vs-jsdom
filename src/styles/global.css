@@ -41,6 +41,17 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-grey-50: var(--grey-50);
+  --color-grey-100: var(--grey-100);
+  --color-grey-200: var(--grey-200);
+  --color-grey-300: var(--grey-300);
+  --color-grey-400: var(--grey-400);
+  --color-grey-500: var(--grey-500);
+  --color-grey-600: var(--grey-600);
+  --color-grey-700: var(--grey-700);
+  --color-grey-800: var(--grey-800);
+  --color-grey-900: var(--grey-900);
+  --color-grey-950: var(--grey-950);
 }
 
 :root {
@@ -78,6 +89,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --grey-50:  oklch(0.985 0 0);
+  --grey-100: oklch(0.967 0.001 0);
+  --grey-200: oklch(0.92 0.004 0);
+  --grey-300: oklch(0.871 0.006 0);
+  --grey-400: oklch(0.705 0.015 0);
+  --grey-500: oklch(0.552 0.016 0);
+  --grey-600: oklch(0.442 0.017 0);
+  --grey-700: oklch(0.37 0.013 0);
+  --grey-800: oklch(0.274 0.006 0);
+  --grey-900: oklch(0.21 0.006 0);
+  --grey-950: oklch(0.141 0.005 0);
 }
 
 @layer base {

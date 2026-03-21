@@ -141,10 +141,10 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
     return (
       <div className="flex flex-col items-center justify-center gap-3 text-center h-full">
         <CalendarDays size={32} className="text-slate-400" aria-hidden="true" />
-        <Text as="h3" size="base" weight="semi-bold" color="primary">
+        <Text as="h3" variant="m" weight="semi-bold">
           {t('appointments.pickATime.idle.heading')}
         </Text>
-        <Text size="sm" color="secondary">
+        <Text variant="s" color="grey600">
           {t('appointments.pickATime.idle.description')}
         </Text>
       </div>
@@ -163,7 +163,7 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
     return (
       <div className="flex flex-col items-center justify-center gap-3 text-center h-full">
         <AlertCircle size={24} className="text-red-500" aria-hidden="true" />
-        <Text size="sm" weight="semi-bold" color="error">{t('appointments.pickATime.error.message')}</Text>
+        <Text variant="s" weight="semi-bold">{t('appointments.pickATime.error.message')}</Text>
         <Button variant="outline" size="sm" onClick={onRetry}>
           {t('appointments.pickATime.error.retry')}
         </Button>
@@ -175,10 +175,10 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
     return (
       <div className="flex flex-col items-center justify-center gap-3 text-center h-full">
         <CalendarDays size={32} className="text-slate-400" aria-hidden="true" />
-        <Text as="h3" size="base" weight="semi-bold" color="primary">
+        <Text as="h3" variant="m" weight="semi-bold">
           {t('appointments.pickATime.empty.heading')}
         </Text>
-        <Text size="sm" color="secondary">
+        <Text variant="s" color="grey600">
           {t('appointments.pickATime.empty.description')}
         </Text>
       </div>
@@ -191,7 +191,7 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
         <section>
           <div className="flex items-center gap-2 mb-4">
             <Star className="text-emerald-800" size={20} aria-hidden="true" />
-            <Text as="h3" size="lg" weight="bold" color="primary">
+            <Text as="h3" variant="l" weight="bold">
               {t('appointments.pickATime.recommended.heading')}
             </Text>
           </div>
@@ -201,7 +201,7 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
               const isSelected = selectedTime === slot.time;
               return (
                 <div key={slot.time} className="flex flex-col gap-2">
-                  <Text size="xs" weight="bold" color="secondary">
+                  <Text variant="caption" weight="bold" color="grey600">
                     {t(slot.labelKey)}
                   </Text>
                   <button
@@ -228,7 +228,7 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
       <section>
         <div className="flex items-center gap-2 mb-6">
           <Clock size={20} aria-hidden="true" />
-          <Text as="h3" size="lg" weight="bold" color="primary">
+          <Text as="h3" variant="l" weight="bold">
             {t('appointments.pickATime.allAvailability.heading')}
           </Text>
         </div>
@@ -238,7 +238,7 @@ export function TimeSlots({ selectedTime, onTimeSelect, timeslots, isPending = t
             <div key={group.labelKey}>
               <div className="flex items-center gap-1 mb-3">
                 <group.Icon size={16} aria-hidden="true" />
-                <Text as="h4" size="sm" weight="bold" color="secondary">
+                <Text as="h4" variant="s" weight="bold" color="grey600">
                   {t(group.labelKey)}
                 </Text>
               </div>

@@ -1,12 +1,13 @@
-import type { ReactNode } from 'react';
-import { IntlProvider } from 'react-intl'
+import type { ReactNode } from "react";
+import { IntlProvider } from "react-intl";
 
-import enCore from '../core/i18n/en.json';
-import enAppointments from '../appointments/i18n/en.json';
-import { LocaleProvider, useLocaleContext } from './LocaleProvider';
+import enCore from "../core/i18n/en.json";
+import enAppointments from "../appointments/i18n/en.json";
+import enHome from "../home/i18n/en.json";
+import { LocaleProvider, useLocaleContext } from "./LocaleProvider";
 
 const messagesByLocale = {
-  en: { ...enCore, ...enAppointments },
+  en: { ...enCore, ...enAppointments, ...enHome },
 } as const;
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => (

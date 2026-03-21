@@ -25,7 +25,7 @@ const NotFoundPage = () => {
             </Heading>
           </div>
           <div className="mb-8">
-            <Text size="base" color="secondary">
+            <Text variant="m" color="grey600">
               {t('core.notFound.message')}
             </Text>
           </div>

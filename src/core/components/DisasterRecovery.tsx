@@ -19,7 +19,7 @@ export const DisasterRecovery = () => {
           </Heading>
         </div>
         <div className="mb-8">
-          <Text size="lg" color="secondary" as="p">
+          <Text variant="l" color="grey600" as="p">
             {t('core.disaster.message')}
           </Text>
         </div>

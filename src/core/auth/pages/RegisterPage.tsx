@@ -18,7 +18,7 @@ const RegisterPage = () => {
                 {t('core.auth.register.title')}
               </Heading>
             </div>
-            <Text size="sm" color="secondary">
+            <Text variant="s" color="grey600">
               {t('core.auth.register.subtitle')}
             </Text>
           </div>

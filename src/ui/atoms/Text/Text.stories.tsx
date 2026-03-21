@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Default text with regular weight, base size, and primary color.
+ * Default text — medium size, grey900 colour, regular weight.
  */
 export const Default: Story = {
   args: {
@@ -44,92 +44,85 @@ export const SemiBold: Story = {
 };
 
 /**
- * Extra small text size.
+ * Caption variant — smallest size (12px), typically for labels or metadata.
  */
-export const ExtraSmall: Story = {
+export const Caption: Story = {
   args: {
-    size: 'xs',
-    children: 'Extra small text',
+    variant: 'caption',
+    children: 'Caption text (12px)',
   },
 };
 
 /**
- * Small text size.
+ * Small variant — 14px.
  */
 export const Small: Story = {
   args: {
-    size: 'sm',
-    children: 'Small text',
+    variant: 's',
+    children: 'Small text (14px)',
   },
 };
 
 /**
- * Large text size.
+ * Medium variant — 16px (default).
+ */
+export const Medium: Story = {
+  args: {
+    variant: 'm',
+    children: 'Medium text (16px)',
+  },
+};
+
+/**
+ * Large variant — 18px.
  */
 export const Large: Story = {
   args: {
-    size: 'lg',
-    children: 'Large text',
+    variant: 'l',
+    children: 'Large text (18px)',
   },
 };
 
 /**
- * Extra large text size.
+ * Extra large variant — 20px.
  */
 export const ExtraLarge: Story = {
   args: {
-    size: 'xl',
-    children: 'Extra large text',
+    variant: 'xl',
+    children: 'Extra large text (20px)',
   },
 };
 
 /**
- * 2XL text size.
+ * Muted grey600 colour — useful for secondary / supporting text.
  */
-export const TwoExtraLarge: Story = {
+export const Grey600: Story = {
   args: {
-    size: '2xl',
-    children: '2XL text',
+    color: 'grey600',
+    children: 'Grey 600 — secondary text',
   },
 };
 
 /**
- * Secondary color for less prominent text.
+ * Subtle grey500 colour — useful for placeholder or tertiary text.
  */
-export const Secondary: Story = {
+export const Grey500: Story = {
   args: {
-    color: 'secondary',
-    children: 'Secondary color text',
+    color: 'grey500',
+    children: 'Grey 500 — tertiary text',
   },
 };
 
 /**
- * Tertiary color for subtle text.
+ * Lightest grey50 — typically used on dark backgrounds.
  */
-export const Tertiary: Story = {
+export const Grey50: Story = {
   args: {
-    color: 'tertiary',
-    children: 'Tertiary color text',
+    color: 'grey50',
+    children: 'Grey 50 — on dark background',
   },
-};
-
-/**
- * Error color for validation messages.
- */
-export const Error: Story = {
-  args: {
-    color: 'error',
-    children: 'Something went wrong',
-  },
-};
-
-/**
- * Success color for confirmation messages.
- */
-export const Success: Story = {
-  args: {
-    color: 'success',
-    children: 'Operation completed successfully',
+  parameters: {
+    backgrounds: { default: 'dark' },
   },
 };
 
@@ -144,32 +137,37 @@ export const AsParagraph: Story = {
 };
 
 /**
- * All sizes side by side for comparison.
+ * All variants side by side for comparison.
  */
-export const AllSizes = {
+export const AllVariants = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-      <Text size="xs">Extra small (xs)</Text>
-      <Text size="sm">Small (sm)</Text>
-      <Text size="base">Base (base)</Text>
-      <Text size="lg">Large (lg)</Text>
-      <Text size="xl">Extra large (xl)</Text>
-      <Text size="2xl">2XL (2xl)</Text>
+      <Text variant="caption">Caption (12px)</Text>
+      <Text variant="s">Small (14px)</Text>
+      <Text variant="m">Medium (16px)</Text>
+      <Text variant="l">Large (18px)</Text>
+      <Text variant="xl">Extra large (20px)</Text>
     </div>
   ),
 };
 
 /**
- * All colors side by side for comparison.
+ * Greyscale colour palette side by side for comparison.
  */
 export const AllColors = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-      <Text color="primary">Primary</Text>
-      <Text color="secondary">Secondary</Text>
-      <Text color="tertiary">Tertiary</Text>
-      <Text color="error">Error</Text>
-      <Text color="success">Success</Text>
+      <Text color="grey950">Grey 950</Text>
+      <Text color="grey900">Grey 900 (default)</Text>
+      <Text color="grey800">Grey 800</Text>
+      <Text color="grey700">Grey 700</Text>
+      <Text color="grey600">Grey 600</Text>
+      <Text color="grey500">Grey 500</Text>
+      <Text color="grey400">Grey 400</Text>
+      <Text color="grey300">Grey 300</Text>
+      <Text color="grey200">Grey 200</Text>
+      <Text color="grey100">Grey 100</Text>
+      <Text color="grey50">Grey 50</Text>
     </div>
   ),
 };

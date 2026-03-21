@@ -2,6 +2,11 @@
 
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
+import {
+  type ComponentPropsWithoutRef,
+  type ElementType,
+  type ReactNode,
+} from "react"
 import { cn } from "src/ui/utils"
 
 const buttonVariants = cva(
@@ -49,29 +54,75 @@ const buttonVariants = cva(
   }
 )
 
-type ButtonProps = Omit<ButtonPrimitive.Props, "disabled"> &
-  VariantProps<typeof buttonVariants> & {
+type ButtonVariantProps = VariantProps<typeof buttonVariants>
+
+/** Default branch — renders as @base-ui/react/button with isDisabled support. */
+type DefaultButtonProps = Omit<ButtonPrimitive.Props, "disabled"> &
+  ButtonVariantProps & {
+    component?: undefined
     /** When true, marks the button as aria-disabled and blocks interaction without removing it from the tab order. */
     isDisabled?: boolean
+    children?: ReactNode
   }
 
-function Button({
-  variant = "default",
-  size = "default",
-  isDisabled,
-  children,
-  ...props
-}: ButtonProps) {
+/** Anchor branch — renders as a native <a> element. */
+type AnchorButtonProps = Omit<ComponentPropsWithoutRef<"a">, "className"> &
+  ButtonVariantProps & {
+    component: "a"
+    isDisabled?: never
+    children?: ReactNode
+  }
+
+/** Custom component branch — renders as the provided React component. */
+type CustomButtonProps<Element extends ElementType> = Omit<
+  ComponentPropsWithoutRef<Element>,
+  "className"
+> &
+  ButtonVariantProps & {
+    component: Element
+    isDisabled?: never
+    children?: ReactNode
+  }
+
+type ButtonProps<Element extends ElementType = "button"> =
+  | DefaultButtonProps
+  | AnchorButtonProps
+  | CustomButtonProps<Element>
+
+function Button<Element extends ElementType = "button">(
+  props: ButtonProps<Element>
+) {
+  const { variant = "default", size = "default" } = props
+  const resolvedClassName = cn(buttonVariants({ variant, size }))
+
+  if (!props.component) {
+    const { isDisabled, children, component: _component, ...rest } =
+      props as DefaultButtonProps
+    return (
+      <ButtonPrimitive
+        data-slot="button"
+        aria-disabled={isDisabled ? true : undefined}
+        focusableWhenDisabled={isDisabled}
+        className={resolvedClassName}
+        {...rest}
+      >
+        {children}
+      </ButtonPrimitive>
+    )
+  }
+
+  const { component, children, component: _component, ...rest } =
+    props as AnchorButtonProps & { component: ElementType }
+  const Element = component
+
   return (
-    <ButtonPrimitive
+    <Element
       data-slot="button"
-      aria-disabled={isDisabled ? true : undefined}
-      focusableWhenDisabled={isDisabled}
-      className={cn(buttonVariants({ variant, size }))}
-      {...props}
+      className={resolvedClassName}
+      {...rest}
     >
       {children}
-    </ButtonPrimitive>
+    </Element>
   )
 }
 

@@ -55,7 +55,7 @@ export const WithNestedText: Story = {
     component: MockRouterLink,
     to: '/brand',
     children: (
-      <Text weight="bold" size="lg" color="primary">
+      <Text weight="bold" variant="l">
         Brand Name
       </Text>
     ),
@@ -104,7 +104,7 @@ export const AllVariants: Story = {
         Custom Component Link
       </Link>
       <Link component={MockRouterLink} to="/brand">
-        <Text weight="bold" size="lg" color="primary">
+        <Text weight="bold" variant="l">
           Styled with Text
         </Text>
       </Link>

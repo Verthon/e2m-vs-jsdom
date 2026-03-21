@@ -38,7 +38,7 @@ export function PickATime({ doctorId, onSelectionChange }: PickATimeProps) {
         <Heading as="h2" variant="heading-md">
           {t('appointments.pickATime.heading')}
         </Heading>
-        <Text as="p" size="sm" color="secondary">
+        <Text as="p" variant="s" color="grey600">
           {t('appointments.pickATime.description')}
         </Text>
       </div>
