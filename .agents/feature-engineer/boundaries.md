@@ -49,7 +49,7 @@ You cannot report a task as "Complete" until you have executed and passed the fo
 
 ### Gate 1: The Integrity Check (Lint & Format)
 
-- **Command:** `npm run lint` or `npx eslint src/<feature>`
+- **Command:** `npm run lint`
 - **Objective:** Ensure no unused imports, proper naming, and no `className` violations on UI components.
 
 ### Gate 2: The Logic Check (Type-Safety)

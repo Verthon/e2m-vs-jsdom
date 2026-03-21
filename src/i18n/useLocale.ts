@@ -1,19 +1,26 @@
-import { useIntl } from 'react-intl';
-import { useLocaleContext } from './LocaleProvider';
+import { useIntl } from "react-intl";
+import { useLocaleContext } from "./LocaleProvider";
+import type { ReactNode } from "react";
 
-type TranslateFn<TMessages extends Record<string, string>> = <
-  Key extends keyof TMessages & string,
->(
-  key: Key,
-  values?: Record<string, string>,
-) => string;
+type RichTextRenderer = (chunks: ReactNode) => ReactNode;
 
-export const useLocale = <TMessages extends Record<string, string>>() => {
+type PrimitiveValues = Record<string, string | number>;
+type RichValues = Record<
+  string,
+  string | number | ReactNode | RichTextRenderer
+>;
+
+interface TranslateFn {
+  (key: string, values?: PrimitiveValues): string;
+  (key: string, values: RichValues): ReactNode;
+}
+
+export const useLocale = () => {
   const { locale, setLocale } = useLocaleContext();
   const intl = useIntl();
 
-  const t: TranslateFn<TMessages> = (key, values) =>
-    intl.formatMessage({ id: key }, values);
+  const t = ((key: string, values?: RichValues) =>
+    intl.formatMessage({ id: key }, values as any)) as TranslateFn;
 
-  return { locale, setLocale, t };
+  return { locale, setLocale, t } as const;
 };

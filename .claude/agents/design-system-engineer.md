@@ -6,4 +6,4 @@ color: orange
 memory: project
 ---
 
-@.agents/design-system-engineer.md
+@.agents/design-system-engineer/agent.md

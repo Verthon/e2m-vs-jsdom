@@ -20,11 +20,22 @@ You must categorize every turn into one of three **Modes**. State your Mode and 
     2. **Hammer (Complex):** Spans 3+ modules? -> **Plan First.**
     3. **Brush (Low Risk):** Localized UI or mocks? -> **Direct Action.**
 
-### C. Audit Mode (The Alignment)
+### C. Integration Mode
+
+- **Trigger:** user pastes raw HTML/markup from Stitch, Figma export, or any external design tool, OR explicitly says "here's the markup." Action: activate the markup-integration skill pipeline (Steps 1–6). Do NOT skip steps. Do NOT treat this as a normal Execution task.
+
+### D. Audit Mode (The Alignment)
 
 **Trigger:** User provides existing code for review or a migration task.
 
 - **Action:** Compare input against `boundaries.md` and `skills/`.
+
+Integration Mode — Decision Flow
+
+1. Detect: Input contains a block of raw HTML or user signals a paste ("here's the markup", "from Stitch", "dump this into", "integrate this design").
+2. Load: Read `skills/markup-integration.md`. Follow the pipeline sequentially.
+3. Depend: At Step 3 (Map), consult `.agents/design-system-engineer/skills/element-mapping.md` for all HTML → `src/ui/` mappings. Follow its static table and ambiguity protocol.
+4. Gate: Do not proceed past Step 2 (Audit) without user acknowledgment. Do not proceed past Step 5 (Extract) without user approval of the proposed split.
 
 ---
 
@@ -39,6 +50,8 @@ Reference these files only when the **Trigger** condition is met to avoid contex
 | **UI Components** | Building feature-specific UI or using design system. | `./skills/ui-components.md` |
 | **Routing** | Registering pages or adding new route paths. | `./skills/routing.md` |
 | **Testing Mocks** | Creating or updating MSW handlers and fixtures. | `./skills/testing-mocks.md` |
+│ **Markup Integration**    │ raw HTML paste from Stitch/Figma/external tool   │ ./skills/markup-integration.md                           │
+│ Element Mapping (ext) │ loaded BY markup-integration at Step 3           │ .agents/design-system-engineer/skills/element-mapping.md  │
 
 ---
 

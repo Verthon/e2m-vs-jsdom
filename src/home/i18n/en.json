@@ -27,5 +27,53 @@
   "home.footer.privacyPolicy": "Privacy Policy",
   "home.footer.termsOfService": "Terms of Service",
   "home.footer.contact": "Contact",
-  "home.footer.clinicalDisclaimer": "* All services subject to clinical review and availability."
+  "home.footer.clinicalDisclaimer": "* All services subject to clinical review and availability.",
+
+  "home.plans.heading": "Select Your Treatment Plan",
+  "home.plans.subheading": "All plans include access to our AI. It has opinions.",
+  "home.plans.mostPopular": "Most Popular",
+  "home.plans.price": "{price} <sub>/mo</sub>",
+  "home.plans.footerAsterisk": "*almost",
+  "home.plans.footerNote": "All plans include a 14-day free trial. No credit card required. Cancel anytime — we won't guilt-trip you. Much.",
+
+  "home.plans.vitalSigns.name": "Vital Signs",
+  "home.plans.vitalSigns.price": "$29",
+  "home.plans.vitalSigns.feature1": "Daily biometric monitoring",
+  "home.plans.vitalSigns.feature2": "Passive health tracking",
+  "home.plans.vitalSigns.feature3": "AI text summaries",
+  "home.plans.vitalSigns.cta": "Select Vital Signs",
+
+  "home.plans.stableCondition.name": "Stable Condition",
+  "home.plans.stableCondition.price": "$79",
+  "home.plans.stableCondition.feature1": "Everything in Vital Signs",
+  "home.plans.stableCondition.feature2": "24/7 Clinical desk access",
+  "home.plans.stableCondition.feature3": "Monthly physician review",
+  "home.plans.stableCondition.feature4": "Custom drug-interaction AI",
+  "home.plans.stableCondition.cta": "Select Stable",
+
+  "home.plans.immortal.name": "Immortal",
+  "home.plans.immortal.price": "$199",
+  "home.plans.immortal.feature1": "Full genetic sequencing",
+  "home.plans.immortal.feature2": "Real-time AI intervention",
+  "home.plans.immortal.feature3": "Synthetic organ pre-approval",
+  "home.plans.immortal.feature4": "Priority clinical concierge",
+  "home.plans.immortal.cta": "Achieve Immortality*",
+
+  "home.howItWorks.heading": "What Your Subscription Includes",
+  "home.howItWorks.subheading": "Three things that actually work. Everything else is on the roadmap.",
+
+  "home.howItWorks.aiChecker.badge": "AI-Powered",
+  "home.howItWorks.aiChecker.title": "AI Symptom Checker",
+  "home.howItWorks.aiChecker.description": "Describe what hurts. Our AI will tell you what it probably isn't, based on a rigorous statistical model that doesn't care about your feelings.",
+  "home.howItWorks.aiChecker.cta": "Try it free",
+
+  "home.howItWorks.booking.title": "Appointment Booking",
+  "home.howItWorks.booking.description": "Search by specialty, location, or available time. We handle the scheduling so you can focus on being anxious about the appointment itself.",
+  "home.howItWorks.booking.cta": "Browse doctors",
+
+  "home.howItWorks.records.title": "Digital Health Records",
+  "home.howItWorks.records.description": "All your medical history in one place, encrypted and organized better than that physical folder you lost during the move in 2019.",
+  "home.howItWorks.records.cta": "View demo",
+
+  "home.howItWorks.footerNote": "More features launching quarterly. We'll email you about them whether you want us to or not."
 }
